@@ -4,6 +4,13 @@
     flex-direction: column;
 }
 
+.photographerCard a {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-decoration: none;
+}
+
 .photographerCard img {
     height: 200px;
     width: 200px;

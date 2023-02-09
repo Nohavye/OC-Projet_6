@@ -1,0 +1,32 @@
+.photograph-header {
+    background-color: #FAFAFA;
+    padding: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.photograph-header h2 {
+    color: #d3573c;
+    font-weight: 400;
+    font-size: 64px;
+}
+
+.photograph-header .place {
+    color: #901c1c;
+    font-weight: 400;
+    font-size: 24px;
+}
+
+.photograph-header .tagline {
+    color: #525252;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.photograph-header img {
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+    object-fit: cover;
+}
