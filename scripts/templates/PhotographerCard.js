@@ -1,16 +1,12 @@
-// Élements du DOM existants
-const dElements = {
-    photographersSection: document.querySelector(".photographer_section")
-}
-
+/** Création d'une carte de photographe */
 export class PhotographerCard {
 
-    /*  Classe: PhotographerCard
-        Création d'une carte de photographe
-        */
-       
-    constructor(photographerData) {
-        this._data = photographerData
+    /**
+     * Créer une carte de photographe.
+     * @param {object} photographerEntity 
+     */
+    constructor(photographerEntity) {
+        this._data = photographerEntity
     }
 
     create() {
@@ -27,7 +23,6 @@ export class PhotographerCard {
             <p class="tagline">${this._data.tagline}</p>
             <p class="price">${this._data.price}€/jour</p>
         `
-        dElements.photographersSection.appendChild(card)
-        // return card
+        return card
     }
 }
