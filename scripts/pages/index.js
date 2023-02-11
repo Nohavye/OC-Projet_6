@@ -15,7 +15,7 @@ async function init() {
     // Affiche les cartes de photographes
     photographersData.forEach(data => {
         dElements.photographersSection.appendChild(
-            new PhotographerCard(new PhotographerEntity(data)).create()
+            new PhotographerCard(new PhotographerEntity(data)).get()
         )
     })
 };

@@ -4,12 +4,13 @@ import { PhotographerEntity } from '../models/PhotographerEntity.js';
 import { PhotographerHeader } from '../templates/PhotographerHeader.js';
 import { MediaEntity } from '../models/MediaEntity.js';
 import { MediaCard } from '../templates/MediaCard.js';
+import { InsertBox } from '../templates/InsertBox.js';
+import { addLikes } from '../lib/function.js';
 
 // Élements du DOM existants
 const dElement = {
-    browserSection: document.querySelector(".media-browser"),
-    textWrapper: document.querySelector(".photographer-info"),
-    imageWrapper: document.querySelector(".photographer-photo")
+    main: document.querySelector("main"),
+    browserSection: document.querySelector(".media-browser")
 }
 
 async function init() {
@@ -21,18 +22,23 @@ async function init() {
     await dataManager.loadData('data/photographers.json')
     const photographerEntity = new PhotographerEntity(dataManager.search('photographers', 'id', id)[0])
 
-    // Mise à jour de bannière
+    // Création de la bannière
     const header = new PhotographerHeader(photographerEntity)
-    header.update(dElement.textWrapper, dElement.imageWrapper)
+    dElement.main.insertAdjacentElement('afterbegin', header.get())
 
-    // Récupère les photos (datas)
+    // Récupère les médias (datas)
     const photosData = dataManager.search('media', 'photographerId', id)
 
+    // Afficher les médias
     photosData.forEach(data => {
         dElement.browserSection.appendChild(
-            new MediaCard(new MediaEntity(data)).create()
+            new MediaCard(new MediaEntity(data)).get()
         )
     })
+
+    // Afficher encart
+    const insertBox = new InsertBox(addLikes(photosData), photographerEntity.price)
+    dElement.main.appendChild(insertBox.get())
 }
 
 init()

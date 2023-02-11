@@ -2,17 +2,20 @@
     display: none;
 }
 
-.contact_button {
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    padding: 11px;
-    width: 170px;
-    height: 70px;
-    border: none;
-    background-color: #901C1C;
-    border-radius: 5px;
-    cursor: pointer;
+.insertBox {
+    position: fixed;
+    bottom: 0;
+    right: 50px;
+    background-color: #DB8876;
+    padding: 20px 50px;
+    width: max-content;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 70px;
+    font-size: 24px;
+    font-weight: 500;
+    border-radius: 10px 10px 0 0;
 }
 
 .modal {
