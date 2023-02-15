@@ -29,4 +29,8 @@ export class PhotographerHeader {
     get() {
         return this.#_header
     }
+
+    get contactButton() {
+        return document.querySelector(".contact_button")
+    }
 }

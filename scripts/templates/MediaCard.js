@@ -20,7 +20,7 @@ export class MediaCard {
 
             case 'video':
                 this.#_card.insertAdjacentHTML('beforeend', `
-                    <video controls>
+                    <video autoplay mute loop>
                         <source src="${entity.file}" type="video/mp4">
                     </video>
                 `)

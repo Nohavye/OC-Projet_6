@@ -11,7 +11,19 @@
     text-decoration: none;
 }
 
+.photographerCard a:hover > img {
+    scale: 1.2;
+    rotate: 24deg;
+}
+
+.photographerCard a:hover > h2 {
+    scale: 1.1;
+    font-weight: bolder;
+}
+
 .photographerCard img {
+    z-index: -1;
+    transition: rotate 250ms, scale 250ms;
     height: 200px;
     width: 200px;
     border-radius: 100%;
@@ -19,6 +31,7 @@
 }
 
 .photographerCard h2 {
+    transition: scale 250ms;
     color: #D3573C;
     font-weight: 400;
     font-size: 36px;
