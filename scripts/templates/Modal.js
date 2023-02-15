@@ -13,14 +13,17 @@ export class Modal {
         `,
 
         title: `
+            transform: translateY(-25px);
             font-size: 64px;
             font-weight: normal;
-            text-align: center;
+            text-align: left;
         `,
 
         header: `
+            align-items: flex-start;
             justify-content: space-between;
             width: 100%;
+            height: max-content;
         `,
 
         contentBox: `
@@ -29,7 +32,7 @@ export class Modal {
 
         box: `
             padding: 35px;
-            min-width: 50%;
+            min-width: 30%;
         `,
         
         wrapper: (lightBox) => {
@@ -47,9 +50,14 @@ export class Modal {
                 height: 100%;
             `
         }
-        
     }
 
+    /**
+     * Création d'une modale.
+     * @param {string} name - Nom de la modale.
+     * @param {string} title - Titre affiché dans la modale.
+     * @param {boolean} [lightBox] - Mode lightBox.
+     */
     constructor(name, title, lightBox) {
         lightBox = lightBox || false
 
@@ -102,19 +110,29 @@ export class Modal {
         })
     }
 
+    /**
+     * Ajouter un élement dans la modal.
+     * @param {Element} child - Element enfant.
+     */
     addContent(child) {
         this.#_contentBox.insertAdjacentElement('beforeend', child)
     }
 
+    /**
+     * Afficher la modale. */
     show() {
         this.#_wrapper.style.display = "flex"
     }
     
+    /**
+     * Cacher la modale. */
     hide() {
         this.#_wrapper.style.display = "none"
     }
 
-    get modal() {
+    /**
+     * Retourne la modale. */
+    get get() {
         return this.#_wrapper
     }
 }

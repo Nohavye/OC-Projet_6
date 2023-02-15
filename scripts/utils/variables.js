@@ -1,4 +1,4 @@
-import { InputText, InputTextArea } from './InputElement.js'
+import { InputText, InputTextArea } from '../templates/Form.js'
 
 export const dElements = {
     photographersSection: document.querySelector(".photographer_section"),

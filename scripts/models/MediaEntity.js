@@ -1,4 +1,5 @@
-/** Constructor Pattern: Formatage des données relative au média */
+/** 
+ * Constructor Pattern: Formatage des données relative au média */
 export class MediaEntity {
 
     /**

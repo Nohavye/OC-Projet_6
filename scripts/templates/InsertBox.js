@@ -1,7 +1,13 @@
-/** Création de l'encart */
+/** 
+ * Création de l'encart */
 export class InsertBox {
     #_inserBox
 
+    /**
+     * Création de l'encart likes / tarif.
+     * @param {number} likes - Nombre de likes.
+     * @param {number} price - Tarif journalier.
+     */
     constructor(likes, price) {
         this.#_inserBox = document.createElement('div')
         this.#_inserBox.classList.add('insertBox')
@@ -12,8 +18,9 @@ export class InsertBox {
         `
     }
 
-    /** Retourne l'encart */
-    get() {
+    /** 
+     * Retourne l'encart. */
+    get get() {
         return this.#_inserBox
     }
 }

@@ -1,4 +1,5 @@
-/** Création d'une carte de média */
+/** 
+ * Création d'une carte de média */
 export class MediaCard {
     #_card
 
@@ -35,8 +36,9 @@ export class MediaCard {
         `)
     }
 
-    /** Retourne la carte. */
-    get() {
+    /** 
+     * Retourne la carte. */
+    get get() {
         return this.#_card
     }
 }

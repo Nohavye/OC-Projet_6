@@ -1,4 +1,5 @@
-/** Constructor Pattern: Formatage des données relative au photographe */
+/** 
+ * Constructor Pattern: Formatage des données relative au photographe */
 export class PhotographerEntity {
 
     /**

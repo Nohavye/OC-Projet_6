@@ -1,4 +1,5 @@
-/** Gestion de données JSON. */
+/** 
+ * Gestion de données JSON. */
 export class dataManager {
     static #data
 

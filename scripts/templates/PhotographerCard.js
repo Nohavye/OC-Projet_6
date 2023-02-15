@@ -22,8 +22,9 @@ export class PhotographerCard {
         `
     }
 
-    /** Retourne la carte. */
-    get() {
+    /** 
+     * Retourne la carte. */
+    get get() {
         return this.#_card
     }
 }

@@ -29,24 +29,24 @@ async function init() {
 
     // Création de la bannière
     const photographerHeader = new PhotographerHeader(photographerEntity)
-    dElements.main.insertAdjacentElement('afterbegin', photographerHeader.get())
+    dElements.main.insertAdjacentElement('afterbegin', photographerHeader.get)
 
     // Création de la modale
     const contactForm = new Form('contact', contactFormInputs)
-    const contactModal = new Modal('contact', 'Contactez moi !')
-    contactModal.addContent(contactForm.form)
-    dElements.main.appendChild(contactModal.modal)
+    const contactModal = new Modal('contact', `Contactez moi<br>${photographerEntity.name}`)
+    contactModal.addContent(contactForm.get)
+    dElements.main.appendChild(contactModal.get)
 
     contactForm.startListeners()
 
-    contactForm.form.addEventListener('submit-contact', (e) => {
+    contactForm.get.addEventListener('submit-contact', (e) => {
         const answers = e.detail.answers
         for(let entry of answers) { console.log(entry) }
         contactForm.displaySuccesMessage(`
             Merci ${answers.get('first-name')} pour votre message, il a bien été transmis.
             Notre artiste vous répondra dans les meilleurs délais à l'adresse suivante:
             ${answers.get('email')}
-        `)
+        `, 'Nouveau message')
     })
 
     photographerHeader.contactButton.addEventListener('click', () => {
@@ -56,13 +56,13 @@ async function init() {
     // Afficher les médias
     mediasData.forEach(data => {
         dElements.browserSection.appendChild(
-            new MediaCard(new MediaEntity(data)).get()
+            new MediaCard(new MediaEntity(data)).get
         )
     })
 
     // Afficher encart
     const insertBox = new InsertBox(addLikes(mediasData), photographerEntity.price)
-    dElements.main.appendChild(insertBox.get())
+    dElements.main.appendChild(insertBox.get)
 }
 
 init()

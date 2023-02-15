@@ -25,11 +25,14 @@ export class PhotographerHeader {
         `
     }
 
-    /** Retourne le header. */
-    get() {
+    /** 
+     * Retourne le header. */
+    get get() {
         return this.#_header
     }
 
+    /** 
+     * Retourne le boutton du header. */
     get contactButton() {
         return document.querySelector(".contact_button")
     }
