@@ -6,7 +6,7 @@ import { OptionSelector } from '../templates/OptionSelector.js';
 import { MediaEntity } from '../models/MediaEntity.js';
 import { MediaCard } from '../templates/MediaCard.js';
 import { InsertBox } from '../templates/InsertBox.js';
-import { addLikes, sortMediaCarsByLikes } from '../utils/functions.js';
+import { addLikes } from '../utils/functions.js';
 import { Modal } from '../templates/Modal.js';
 import { Form } from '../templates/Form.js';
 
