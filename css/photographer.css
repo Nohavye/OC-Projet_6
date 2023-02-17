@@ -17,6 +17,7 @@
 .contact-modal {
     border-radius: 5px;
     background-color: #DB8876;
+    width: 40%;
     display: flex;
     flex-direction: column;
     align-items: center;
