@@ -37,9 +37,10 @@ export class Modal {
         
         wrapper: (lightBox) => {
             let bgColor = 'background-color: transparent;'
-            if(lightBox) { bgColor = 'background-color: rgba(0, 0, 0, 0.75);'}
+            if(lightBox) { bgColor = 'background-color: rgba(255, 255, 255, 0.75);'}
             return `
                 ${bgColor}
+                z-index: 1;
                 display: none;
                 align-items: center;
                 justify-content: center;
