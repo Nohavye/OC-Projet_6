@@ -7,8 +7,12 @@ import { MediaEntity } from '../models/MediaEntity.js';
 import { MediaCard } from '../templates/MediaCard.js';
 import { InsertBox } from '../templates/InsertBox.js';
 import { addLikes } from '../utils/functions.js';
+
+import { ModalWrapper } from '../templates/ModalWrapper.js';
 import { Modal } from '../templates/Modal.js';
+
 import { Form } from '../templates/Form.js';
+import { Viewer } from '../templates/Viewer.js';
 
 function getId() {
     const params = (new URL(document.location)).searchParams
@@ -70,10 +74,12 @@ async function init() {
     })
     
     // Afficher les médias
-    const mediaEntitys = []
+    const mediaEntities = []
     mediasData.forEach(data => {
-        mediaEntitys.push(new MediaEntity(data))
+        mediaEntities.push(new MediaEntity(data))
     })
+
+    const viewer = new Viewer()
 
     filtreSelector.get.addEventListener('filter-option-change', (e) => {
         console.log(e.detail.option)
@@ -81,30 +87,37 @@ async function init() {
         switch(e.detail.option) {
             
             case 'popularity':
-                mediaEntitys.sort((a, b) => b.likes - a.likes)
-                displayCards(mediaEntitys)
+                mediaEntities.sort((a, b) => b.likes - a.likes)
+                displayCards(mediaEntities)
+                viewer.setPlaylist(mediaEntities)
                 break
 
             case 'date':
-                mediaEntitys.sort((a, b) => new Date(a.date) - new Date(b.date))
-                displayCards(mediaEntitys)
-                mediaEntitys.forEach((entity) => {console.log(entity.date)})
+                mediaEntities.sort((a, b) => new Date(a.date) - new Date(b.date))
+                displayCards(mediaEntities)
+                viewer.setPlaylist(mediaEntities)
                 break
 
             case 'title':
-                mediaEntitys.sort((a, b) => a.title.localeCompare(b.title))
-                displayCards(mediaEntitys)
+                mediaEntities.sort((a, b) => a.title.localeCompare(b.title))
+                displayCards(mediaEntities)
+                viewer.setPlaylist(mediaEntities)
                 break
         }
     })
 
     filtreSelector.value = 'date'
 
-    // mediasData.forEach(data => {
-    //     dElements.browserSection.appendChild(
-    //         new MediaCard(new MediaEntity(data)).get
-    //     )
-    // })
+    const viewerModal = new ModalWrapper('viewer')
+    viewerModal.addContent(viewer.get)
+    
+    dElements.main.appendChild(viewerModal.element)
+
+    document.addEventListener('mediaClick', (e) => {
+        console.log(e.detail.mediaId)
+        viewer.setScreen(e.detail.mediaId)
+        viewerModal.show()
+    })
 
     // Afficher encart
     const insertBox = new InsertBox(addLikes(mediasData), photographerEntity.price)

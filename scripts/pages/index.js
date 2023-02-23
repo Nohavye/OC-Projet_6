@@ -14,7 +14,7 @@ async function init() {
             new PhotographerCard(new PhotographerEntity(data)).get
         )
     })
-};
+}
 
 init()
     

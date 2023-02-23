@@ -5,6 +5,12 @@ export class Modal {
     #_box
     #_contentBox
     #_closeButton
+    #_lightBox
+    #_darkmode = false
+
+    #_elements = {
+        title: document.createElement('h2')
+    }
 
     #_styles = {
 
@@ -35,9 +41,9 @@ export class Modal {
             min-width: 30%;
         `,
         
-        wrapper: (lightBox) => {
+        wrapper: () => {
             let bgColor = 'background-color: transparent;'
-            if(lightBox) { bgColor = 'background-color: rgba(255, 255, 255, 0.75);'}
+            if(this.#_lightBox) { bgColor = `background-color: ${this.#lightBoxBrightness()};`}
             return `
                 ${bgColor}
                 z-index: 1;
@@ -60,14 +66,22 @@ export class Modal {
      * @param {boolean} [lightBox] - Mode lightBox.
      */
     constructor(name, title, lightBox) {
-        lightBox = lightBox || false
+        this.#_lightBox = lightBox || false
 
         this.#_name = name
         this.#_title = title
 
         this.#initBox()
-        this.#initWrapper(lightBox)
+        this.#initWrapper()
         this.#initEvents()
+    }
+
+    #lightBoxBrightness() {
+        if(this.#_darkmode) {
+            return 'rgba(0, 0, 0, 0.75)'
+        } else {
+            return 'rgba(255, 255, 255, 0.75)'
+        }
     }
 
     #initBox() {
@@ -77,13 +91,13 @@ export class Modal {
         this.#_closeButton.setAttribute('style', this.#_styles.closeButton)
 
         // Create Title Box
-        const title = document.createElement('h2')
-        title.innerHTML = `${this.#_title}`
-        title.setAttribute('style', this.#_styles.title)
+        // const title = document.createElement('h2')
+        this.#_elements.title.innerHTML = `${this.#_title}`
+        this.#_elements.title.setAttribute('style', this.#_styles.title)
 
         // Create header Box
         const header = document.createElement('header')
-        header.appendChild(title)
+        header.appendChild(this.#_elements.title)
         header.appendChild(this.#_closeButton)
         header.setAttribute('style', this.#_styles.header)
 
@@ -99,16 +113,25 @@ export class Modal {
         this.#_box.setAttribute('style', this.#_styles.box)
     }
 
-    #initWrapper(lightBox) {
+    #initWrapper() {
         this.#_wrapper = document.createElement('div')
         this.#_wrapper.appendChild(this.#_box)
-        this.#_wrapper.setAttribute('style', this.#_styles.wrapper(lightBox))
+        this.#_wrapper.setAttribute('style', this.#_styles.wrapper())
     }
 
     #initEvents() {
         this.#_closeButton.addEventListener('click', () => {
             this.hide()
         })
+    }
+
+    setDarkMode(isTrue) {
+        this.#_darkmode = isTrue
+        this.#_wrapper.setAttribute('style', this.#_styles.wrapper())
+    }
+
+    setTitle(title) {
+        this.#_elements.title.innerHTML = title
     }
 
     /**
