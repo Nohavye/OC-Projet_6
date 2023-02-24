@@ -4301,5 +4301,4 @@ node_modules/yocto-queue/readme.md
 .eslintrc.json
 package-lock.json
 package.json
-.vscode
 .vscode/launch.json
