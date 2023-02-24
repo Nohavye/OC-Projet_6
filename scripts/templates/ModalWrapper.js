@@ -33,12 +33,15 @@ export class ModalWrapper extends Template {
         this.#_modalWrapper.box.contentBox._element.appendChild(element)
     }
 
+    setCloseButton(filePath) {
+        this.#_modalWrapper.box.header.closeButton._element.src = filePath
+    }
+
     get element() {
         return this.#_modalWrapper._element
     }
 
     #_modalWrapper = {
-
         _element: document.createElement('div'),
         _attributes: {
 
@@ -54,13 +57,12 @@ export class ModalWrapper extends Template {
         },
 
         box: {
-
             _element: document.createElement('div'),
             _attributes: {
 
                 style: `
                     position: relative;
-                    min-width: 35%;
+                    
                     padding: 35px;
 
                     display: flex;
@@ -76,16 +78,16 @@ export class ModalWrapper extends Template {
                     style: `
                         height: max-content;
                         display: flex;
+                        align-items: start;
                     `
                 },
 
                 title: {
-    
                     _element: document.createElement('h2'),
                     _attributes: {
     
                         style: `
-                            font-size: 64px;
+                            font-size: 48px;
                             font-weight: normal;
                             text-align: left;
                         `
@@ -93,7 +95,6 @@ export class ModalWrapper extends Template {
                 },
     
                 closeButton: {
-    
                     _element: document.createElement('img'),
                     _attributes: {
                         src: 'assets/icons/close_colortheme.svg',
@@ -111,7 +112,7 @@ export class ModalWrapper extends Template {
             },
 
             contentBox: {
-                _element: document.createElement('div')
+                _element: document.createElement('div'),
             }
         }
     }

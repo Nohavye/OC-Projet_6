@@ -9,8 +9,6 @@ import { InsertBox } from '../templates/InsertBox.js';
 import { addLikes } from '../utils/functions.js';
 
 import { ModalWrapper } from '../templates/ModalWrapper.js';
-import { Modal } from '../templates/Modal.js';
-
 import { Form } from '../templates/Form.js';
 import { Viewer } from '../templates/Viewer.js';
 
@@ -51,11 +49,15 @@ async function init() {
     const photographerHeader = new PhotographerHeader(photographerEntity)
     dElements.main.insertAdjacentElement('afterbegin', photographerHeader.get)
 
-    // Création de la modale
+    // Création de la modale pour le formulaire
     const contactForm = new Form('contact', contactFormInputs)
-    const contactModal = new Modal('contact', `Contactez moi<br>${photographerEntity.name}`, true)
+
+    const contactModal = new ModalWrapper('contact', `Contactez moi<br>${photographerEntity.name}`)
+    contactModal.setCloseButton('assets/icons/close.svg')
     contactModal.addContent(contactForm.get)
-    dElements.main.appendChild(contactModal.get)
+
+
+    dElements.main.appendChild(contactModal.element)
 
     contactForm.startListeners()
 
@@ -82,7 +84,6 @@ async function init() {
     const viewer = new Viewer()
 
     filtreSelector.get.addEventListener('filter-option-change', (e) => {
-        console.log(e.detail.option)
 
         switch(e.detail.option) {
             

@@ -18,12 +18,6 @@
     border-radius: 5px;
     background-color: #DB8876;
     width: 40%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 35px;
-    margin: auto;
 }
 
 .contact-form {
@@ -34,7 +28,7 @@
 
 .contact-form label {
     color: #312E2E;
-    font-size: 36px;
+    font-size: 32px;
 }
 
 .contact-form input {
@@ -88,7 +82,7 @@
 .contact-form .succes-message {
     color: #312E2E;
     font-size: 36px;
-    text-align: justify;
+    text-align: center;
     width: 80%;
     margin: auto;
     margin-top: 80px;
