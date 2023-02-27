@@ -1,62 +1,61 @@
-/** 
+/**
  * Constructor Pattern: Formatage des données relative au média */
 export class MediaEntity {
-
-    /**
+  /**
      * Créer une entité média.
      * @param {object} data Données d'un média.
      */
-    constructor(data) {
-        this._id = data.id
-        this._photographerId = data.photographerId
-        this._title = data.title
-        this._file = data.image
+  constructor (data) {
+    this._id = data.id
+    this._photographerId = data.photographerId
+    this._title = data.title
+    this._file = data.image
 
-        if(typeof(data.image) != 'undefined') {
-            this._file = data.image
-            this._fileType = 'image'
-        } else if(typeof(data.video) != 'undefined') {
-            this._file = data.video
-            this._fileType = 'video'
-        } else {
-            this._file = null
-            this._fileType = null
-        }
-
-        this._likes = data.likes
-        this._date = data.date
-        this._price = data.price
+    if (typeof (data.image) !== 'undefined') {
+      this._file = data.image
+      this._fileType = 'image'
+    } else if (typeof (data.video) !== 'undefined') {
+      this._file = data.video
+      this._fileType = 'video'
+    } else {
+      this._file = null
+      this._fileType = null
     }
 
-    get id() {
-        return this._id
-    }
+    this._likes = data.likes
+    this._date = data.date
+    this._price = data.price
+  }
 
-    get photographerId() {
-        return this._photographerId
-    }
+  get id () {
+    return this._id
+  }
 
-    get title() {
-        return this._title
-    }
+  get photographerId () {
+    return this._photographerId
+  }
 
-    get file() {
-        return `assets/photographers/photos/${this._photographerId}/${this._file}`
-    }
+  get title () {
+    return this._title
+  }
 
-    get fileType() {
-        return this._fileType
-    }
+  get file () {
+    return `assets/photographers/photos/${this._photographerId}/${this._file}`
+  }
 
-    get likes() {
-        return this._likes
-    }
+  get fileType () {
+    return this._fileType
+  }
 
-    get date() {
-        return this._date
-    }
+  get likes () {
+    return this._likes
+  }
 
-    get price() {
-        return this._price
-    }
+  get date () {
+    return this._date
+  }
+
+  get price () {
+    return this._price
+  }
 }
