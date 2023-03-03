@@ -1,30 +1,52 @@
-/** Création d'une carte de photographe */
+import { Template } from './Template.js'
+
 export class PhotographerCard {
-  #_card
-
-  /**
-     * Créer une carte de photographe.
-     * @param {PhotographerEntity} entity une entité photographe.
-     */
   constructor (entity) {
-    this.#_card = document.createElement('div')
-    this.#_card.classList.add('photographerCard')
+    this._template = {
+      _: document.createElement('div'),
+      _attributes: { class: 'photographerCard' },
 
-    this.#_card.innerHTML = `
-      <a href="photographer.html?id=${entity.id}">
-          <img src="${entity.portrait.thumbnail}" alt="photo de ${entity.name}">
-          <h2>${entity.name}</h2>
-      </a>
+      link: {
+        _: document.createElement('a'),
+        _attributes: { href: `photographer.html?id=${entity.id}` },
 
-      <p class="place">${entity.city}, ${entity.country}</p>
-      <p class="tagline">${entity.tagline}</p>
-      <p class="price">${entity.price}€/jour</p>
-    `
+        photo: {
+          _: document.createElement('img'),
+          _attributes: {
+            src: entity.portrait.thumbnail,
+            alt: `photo de ${entity.name}`
+          }
+        },
+
+        title: {
+          _: document.createElement('h2'),
+          _textContent: entity.name
+        }
+      },
+
+      place: {
+        _: document.createElement('p'),
+        _textContent: `${entity.city}, ${entity.country}`,
+        _attributes: { class: 'place' }
+      },
+
+      tagline: {
+        _: document.createElement('p'),
+        _textContent: entity.tagline,
+        _attributes: { class: 'tagline' }
+      },
+
+      price: {
+        _: document.createElement('p'),
+        _textContent: `${entity.price} € / jour`,
+        _attributes: { class: 'price' }
+      }
+    }
+
+    Template.build(this._template)
   }
 
-  /**
-     * Retourne la carte. */
-  get get () {
-    return this.#_card
+  get element () {
+    return this._template._
   }
 }
