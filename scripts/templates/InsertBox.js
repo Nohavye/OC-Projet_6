@@ -1,37 +1,27 @@
-/**
- * Création de l'encart */
+import { Template } from './Template.js'
+
 export class InsertBox {
-  #_inserBox
-  #_likesCounter
-
-  /**
-     * Création de l'encart likes / tarif.
-     * @param {number} likes - Nombre de likes.
-     * @param {number} price - Tarif journalier.
-     */
   constructor (likes, price) {
-    this.#_likesCounter = likes
-    this.#_inserBox = document.createElement('div')
-    this.#_inserBox.classList.add('insertBox')
+    this._template = {
+      _: document.createElement('div'),
+      _attributes: {
+        class: 'insertBox'
+      },
 
-    const likesElement = document.createElement('p')
-    likesElement.innerHTML = `${this.#_likesCounter} \u2665`
+      likes: {
+        _: document.createElement('p'),
+        _textContent: `${likes} \u2665`
+      },
 
-    const priceElement = document.createElement('p')
-    priceElement.innerHTML = `${price}€/jour`
-
-    this.#_inserBox.appendChild(likesElement)
-    this.#_inserBox.appendChild(priceElement)
-
-    document.addEventListener('likeClick', () => {
-      this.#_likesCounter += 1
-      likesElement.innerHTML = `${this.#_likesCounter} \u2665`
-    })
+      price: {
+        _: document.createElement('p'),
+        _textContent: `${price}€/jour`
+      }
+    }
+    Template.build(this._template)
   }
 
-  /**
-     * Retourne l'encart. */
-  get get () {
-    return this.#_inserBox
+  get element () {
+    return this._template._
   }
 }

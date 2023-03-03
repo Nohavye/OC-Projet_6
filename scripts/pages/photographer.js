@@ -121,7 +121,7 @@ async function init () {
 
   // Afficher encart
   const insertBox = new InsertBox(addLikes(mediasData), photographerEntity.price)
-  dElements.main.appendChild(insertBox.get)
+  dElements.main.appendChild(insertBox.element)
 }
 
 init()
