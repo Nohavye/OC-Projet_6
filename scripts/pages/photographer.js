@@ -38,12 +38,18 @@ async function init () {
   const mediasData = dataManager.search('media', 'photographerId', photographerId)
 
   // Création filtre
+  /* ------------------------------------------------------------------------------------------ */
+  /* ------------------------------------------------------------------------------------------ */
+
   const filtreSelector = new OptionSelector('filter', 'Trier par', {
     popularity: { name: 'Popularité', value: 'popularity' },
     date: { name: 'Date', value: 'date' },
     title: { name: 'Titre', value: 'title' }
   })
   filtreSelector.addTo(dElements.main)
+
+  /* ------------------------------------------------------------------------------------------ */
+  /* ------------------------------------------------------------------------------------------ */
 
   // Création de la bannière
   const photographerHeader = new PhotographerHeader(photographerEntity)
@@ -84,7 +90,10 @@ async function init () {
 
   const viewer = new Viewer()
 
-  filtreSelector.get.addEventListener('filter-option-change', (e) => {
+  /* ------------------------------------------------------------------------------------------ */
+  /* ------------------------------------------------------------------------------------------ */
+
+  filtreSelector.element.addEventListener('filter-option-change', (e) => {
     switch (e.detail.option) {
       case 'popularity':
         mediaEntities.sort((a, b) => b.likes - a.likes)
@@ -107,6 +116,9 @@ async function init () {
   })
 
   filtreSelector.value = 'date'
+
+  /* ------------------------------------------------------------------------------------------ */
+  /* ------------------------------------------------------------------------------------------ */
 
   const viewerModal = new ModalWrapper('viewer')
   viewerModal.addContent(viewer.get)

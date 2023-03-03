@@ -1,56 +1,51 @@
+import { Template } from './Template.js'
+
 export class OptionSelector {
-  #_name
-  #_label
-  #_value
-
-  #_isDeployed = true
-
-  #_elements = {
-    optionSelector: document.createElement('div'),
-    label: document.createElement('label'),
-    selector: document.createElement('div'),
-    arrow: document.createElement('p'),
-    options: []
-  }
-
-  #_styles = {
-
-    optionSelector: `
-      display: flex;
-    `,
-
-    label: `
-      padding: 20px;
-    `,
-
-    selector: (xOffset) => {
-      return `
-        position: absolute;
-        overflow: hidden;
-        margin-left: ${xOffset + 10}px;
-        padding: 10px;
-        cursor: pointer
-      `
-    },
-
-    option: `
-      padding: 10px;
-      display: flex;
-      justify-content: space-between;
-      gap: 60px;
-    `
-  }
-
   constructor (name, label, options) {
-    this.#_name = name
-    this.#_label = label
+    this._name = name
+    this._isDeployed = true
+    this._value = null
 
-    // class names
-    this.#_elements.label.classList.add(`${this.#_name}-label`)
-    this.#_elements.selector.classList.add(`${this.#_name}-selector`)
-    this.#_elements.optionSelector.classList.add(`${this.#_name}-option-selector`)
+    this._optionElements = []
+    this._arrowElement = document.createElement('p')
 
-    this.#init(options)
+    this._template = {
+      _: document.createElement('div'),
+      _attributes: {
+        class: `${this._name}-option-selector`,
+        style: 'display: flex;'
+      },
+
+      label: {
+        _: document.createElement('label'),
+        _textContent: label,
+        _attributes: {
+          class: `${this._name}-label`,
+          for: `${this._name}-selector`,
+          style: 'padding: 20px;'
+        }
+      },
+
+      selector: {
+        _: document.createElement('div'),
+        _attributes: {
+          class: `${this._name}-selector`,
+          id: `${this._name}-selector`,
+          style: `
+            position: absolute;
+            overflow: hidden;
+            margin-left: 60px;
+            padding: 10px;
+            cursor: pointer;
+          `
+        }
+      }
+    }
+
+    Template.build(this._template)
+
+    this.#initOptions(options)
+    this.#initSelector()
   }
 
   #initOptions (options) {
@@ -59,122 +54,104 @@ export class OptionSelector {
     for (const option of optionsArray) {
       const optionElement = document.createElement('option')
       optionElement.setAttribute('value', option.value)
-      optionElement.setAttribute('style', this.#_styles.option)
+      optionElement.setAttribute('style', `
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        gap: 60px;
+      `)
 
       optionElement.innerHTML = `<p>${option.name}</p>`
 
-      this.#_elements.options.push(optionElement)
+      this._optionElements.push(optionElement)
     }
   }
 
   #initSelector () {
-    this.#_value = this.#_elements.options[0].value
-    this.#_elements.options[0].insertAdjacentElement('beforeend', this.#_elements.arrow)
+    this._value = this._optionElements[0].value
+    this._optionElements[0].insertAdjacentElement('beforeend', this._arrowElement)
 
-    this.#_elements.selector.innerHTML = ''
-    for (const optionElement of this.#_elements.options) {
-      this.#_elements.selector.insertAdjacentElement('beforeend', optionElement)
+    this._template.selector._.innerHTML = ''
+    for (const optionElement of this._optionElements) {
+      this._template.selector._.appendChild(optionElement)
     }
   }
 
-  #initLabel () {
-    this.#_elements.label.setAttribute('style', this.#_styles.label)
-    this.#_elements.label.setAttribute('for', `${this.#_name}-selector`)
-    this.#_elements.label.innerHTML = this.#_label
-  }
-
-  #init (options) {
-    this.#initOptions(options)
-    this.#initSelector()
-    this.#initLabel()
-
-    // option-selector
-    this.#_elements.optionSelector.setAttribute('style', this.#_styles.optionSelector)
-    this.#_elements.optionSelector.insertAdjacentElement('beforeend', this.#_elements.label)
-    this.#_elements.optionSelector.insertAdjacentElement('beforeend', this.#_elements.selector)
-  }
-
-  #initStyles () {
-    this.#_elements.selector.setAttribute('style', this.#_styles.selector(
-      this.#_elements.label.clientWidth
-    ))
-  }
-
   #initEvents () {
-    for (const option of this.#_elements.options) {
+    for (const option of this._optionElements) {
       option.addEventListener('click', () => {
-        this.#_elements.selector.dispatchEvent(new CustomEvent('click-option', {
-          detail: { selectedOption: option.value }
+        this._template.selector._.dispatchEvent(new CustomEvent('click-option', {
+          detail: { value: option.value }
         }))
       })
     }
 
-    this.#_elements.selector.addEventListener('click-option', (e) => {
-      if (this.#_value === e.detail.selectedOption) {
+    this._template.selector._.addEventListener('click-option', (e) => {
+      if (this._value === e.detail.value) {
         this.#toggleSelector()
       } else {
-        this.#orderOptions(e.detail.selectedOption)
+        this.#orderOptions(e.detail.value)
         this.#initSelector()
         this.#toggleSelector()
 
-        this.#_elements.optionSelector.dispatchEvent(new CustomEvent(`${this.#_name}-option-change`, {
-          detail: { option: e.detail.selectedOption }
+        this._template._.dispatchEvent(new CustomEvent(`${this._name}-option-change`, {
+          detail: { option: e.detail.value }
         }))
       }
     })
   }
 
   #toggleSelector () {
-    if (this.#_isDeployed) {
-      this.#_isDeployed = false
-      this.#_elements.selector.style.height = `
-        ${this.#_elements.optionSelector.clientHeight - 22}px
+    if (this._isDeployed) {
+      this._isDeployed = false
+      this._template.selector._.style.height = `
+        ${this._template._.clientHeight - 22}px
       `
-      this.#_elements.arrow.innerHTML = '\u23f7'
+      this._arrowElement.innerHTML = '\u23f7'
     } else {
-      this.#_isDeployed = true
-      this.#_elements.selector.style.height = 'max-content'
-      this.#_elements.arrow.innerHTML = '\u23f6'
+      this._isDeployed = true
+      this._template.selector._.style.height = 'max-content'
+      this._arrowElement.innerHTML = '\u23f6'
     }
   }
 
-  #orderOptions (selectedOption) {
+  #orderOptions (value) {
     let seletedItem
-    let i = 0
+    let index = 0
 
-    for (const option of this.#_elements.options) {
-      if (option.value === selectedOption) {
-        seletedItem = { option, index: i }
+    for (const option of this._optionElements) {
+      if (option.value === value) {
+        seletedItem = { option, index }
         break
       }
-      i++
+      index++
     }
 
-    this.#_elements.options.splice(seletedItem.index, 1)
-    this.#_elements.options.splice(0, 0, seletedItem.option)
+    this._optionElements.splice(seletedItem.index, 1)
+    this._optionElements.splice(0, 0, seletedItem.option)
   }
 
   addTo (parent) {
-    parent.insertAdjacentElement('afterbegin', this.#_elements.optionSelector)
-    this.#initStyles()
+    parent.insertAdjacentElement('afterbegin', this._template._)
+    this._template.selector._.style.marginLeft = `${this._template.label._.clientWidth + 10}px`
     this.#initEvents()
     this.#toggleSelector()
   }
 
-  get value () {
-    return this.#_value
-  }
-
-  set value (option) {
-    this.#orderOptions(option)
+  set value (value) {
+    this.#orderOptions(value)
     this.#initSelector()
 
-    this.#_elements.optionSelector.dispatchEvent(new CustomEvent(`${this.#_name}-option-change`, {
-      detail: { option }
+    this._template._.dispatchEvent(new CustomEvent(`${this._name}-option-change`, {
+      detail: { option: value }
     }))
   }
 
-  get get () {
-    return this.#_elements.optionSelector
+  get value () {
+    return this._value
+  }
+
+  get element () {
+    return this._template._
   }
 }
