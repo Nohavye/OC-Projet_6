@@ -2,6 +2,8 @@ import { Template } from './Template.js'
 
 export class InsertBox {
   constructor (likes, price) {
+    this._likes = likes
+
     this._template = {
       _: document.createElement('div'),
       _attributes: {
@@ -10,7 +12,7 @@ export class InsertBox {
 
       likes: {
         _: document.createElement('p'),
-        _textContent: `${likes} \u2665`
+        _textContent: `${this._likes} \u2665`
       },
 
       price: {
@@ -18,7 +20,13 @@ export class InsertBox {
         _textContent: `${price}€/jour`
       }
     }
+
     Template.build(this._template)
+
+    document.addEventListener('likeCardClick', (e) => {
+      this._likes += e.detail.addedValue
+      this._template.likes._.innerHTML = `${this._likes} \u2665`
+    })
   }
 
   get element () {

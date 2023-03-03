@@ -20,7 +20,7 @@ function getId () {
 function displayCards (mediaEntitys) {
   dElements.browserSection.innerHTML = ''
   mediaEntitys.forEach(entity => {
-    dElements.browserSection.appendChild(new MediaCard(entity).get)
+    dElements.browserSection.appendChild(new MediaCard(entity).element)
   })
 }
 
@@ -113,7 +113,7 @@ async function init () {
 
   dElements.main.appendChild(viewerModal.element)
 
-  document.addEventListener('mediaClick', (e) => {
+  document.addEventListener('mediaCardClick', (e) => {
     console.log(e.detail.mediaId)
     viewer.setScreen(e.detail.mediaId)
     viewerModal.show()

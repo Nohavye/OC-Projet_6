@@ -1,71 +1,85 @@
-/**
- * Création d'une carte de média */
+import { Template } from './Template.js'
+
 export class MediaCard {
-  #_card
-  #_mediaElement
-
-  /**
-     * Créer une carte de média
-     * @param {MediaEntity} entity une entité média.
-     */
   constructor (entity) {
-    this.#_card = document.createElement('div')
-    this.#_card.classList.add('mediaCard')
+    this._likes = entity.likes
 
-    this.#_mediaElement = document.createElement('div')
-    this.#_mediaElement.setAttribute('style', 'cursor: pointer;')
+    this._template = {
+      _: document.createElement('div'),
+      _attributes: { class: 'mediaCard' },
+
+      thumbnail: {
+        _: document.createElement('div'),
+        _attributes: { style: 'cursor: pointer;' },
+        _events: {
+          click: () => {
+            document.dispatchEvent(new CustomEvent('mediaCardClick', {
+              detail: { mediaId: entity.id }
+            }))
+          }
+        }
+      },
+
+      legend: {
+        _: document.createElement('div'),
+        _attributes: { class: 'legend' },
+
+        title: {
+          _: document.createElement('p'),
+          _textContent: `${entity.title}`,
+          _attributes: { class: 'title' }
+        },
+
+        likes: {
+          _: document.createElement('p'),
+          _textContent: `${this._likes} \u2661`,
+          _attributes: {
+            class: 'likes',
+            style: 'cursor: pointer;'
+          },
+          _events: {
+            click: () => {
+              let addedValue = null
+
+              if (this._likes === entity.likes) {
+                addedValue = 1
+                this._likes += addedValue
+                this._template.legend.likes._.innerHTML = `${this._likes} \u2665`
+              } else {
+                addedValue = -1
+                this._likes += addedValue
+                this._template.legend.likes._.innerHTML = `${this._likes} \u2661`
+              }
+
+              document.dispatchEvent(new CustomEvent('likeCardClick', {
+                detail: { addedValue }
+              }))
+            }
+          }
+        }
+      }
+    }
+
+    Template.build(this._template)
 
     switch (entity.fileType) {
       case 'image':
-        this.#_mediaElement.innerHTML = `
+        this._template.thumbnail._.innerHTML = `
           <img src="${entity.file}">
         `
         break
 
       case 'video':
-        this.#_mediaElement.innerHTML = `
+        this._template.thumbnail._.innerHTML = `
           <video autoplay mute loop>
               <source src="${entity.file}" type="video/mp4">
           </video>
         `
         break
     }
-
-    this.#_card.insertAdjacentElement('beforeend', this.#_mediaElement)
-
-    const legend = document.createElement('div')
-    legend.classList.add('legend')
-
-    const title = document.createElement('p')
-    title.classList.add('title')
-    title.innerHTML = `${entity.title}`
-
-    const likes = document.createElement('p')
-    likes.classList.add('likes')
-    likes.innerHTML = `${entity.likes} \u2665`
-    likes.style.cursor = 'pointer'
-
-    legend.appendChild(title)
-    legend.appendChild(likes)
-
-    this.#_card.insertAdjacentElement('beforeend', legend)
-
-    likes.addEventListener('click', () => {
-      entity._likes += 1
-      likes.innerHTML = `${entity.likes} \u2665`
-      document.dispatchEvent(new Event('likeClick'))
-    })
-
-    this.#_mediaElement.addEventListener('click', () => {
-      document.dispatchEvent(new CustomEvent('mediaClick', {
-        detail: { mediaId: entity.id }
-      }))
-    })
   }
 
-  /**
-     * Retourne la carte. */
-  get get () {
-    return this.#_card
+  get element () {
+    return this._template._
   }
 }
