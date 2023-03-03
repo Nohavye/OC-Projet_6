@@ -53,7 +53,7 @@ async function init () {
   const contactForm = new FormElement('contact', contactFormInputs)
 
   const contactModal = new ModalWrapper('contact', `Contactez moi<br>${photographerEntity.name}`)
-  contactModal.setCloseButton('assets/icons/close.svg')
+  contactModal.setCloseButtonImage('assets/icons/close.svg')
   contactModal.addContent(contactForm.element)
 
   dElements.main.appendChild(contactModal.element)
