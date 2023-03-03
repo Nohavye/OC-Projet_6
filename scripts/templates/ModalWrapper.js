@@ -1,6 +1,6 @@
-import { Template } from './Template.js'
+import { _Template } from './_Template.js'
 
-export class ModalWrapper extends Template {
+export class ModalWrapper extends _Template {
   constructor (name, title) {
     super()
     this.#initElement(name, title)

@@ -1,6 +1,6 @@
-import { Template } from './Template.js'
+import { _Template } from './_Template.js'
 
-export class Viewer extends Template {
+export class Viewer extends _Template {
   #_mediaEntities
   #_currentIndex
 

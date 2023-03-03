@@ -1,4 +1,4 @@
-import { dElements, contactFormInputs } from '../utils/variables.js'
+import { contactFormInputs, dElements } from '../utils/variables.js'
 import { dataManager } from '../api/dataManager.js'
 import { PhotographerEntity } from '../models/PhotographerEntity.js'
 import { PhotographerHeader } from '../templates/PhotographerHeader.js'
@@ -9,7 +9,7 @@ import { InsertBox } from '../templates/InsertBox.js'
 import { addLikes } from '../utils/functions.js'
 
 import { ModalWrapper } from '../templates/ModalWrapper.js'
-import { Form } from '../templates/Form.js'
+import { FormElement } from '../templates/FormElement.js'
 import { Viewer } from '../templates/Viewer.js'
 
 function getId () {
@@ -50,24 +50,26 @@ async function init () {
   dElements.main.insertAdjacentElement('afterbegin', photographerHeader.get)
 
   // Création de la modale pour le formulaire
-  const contactForm = new Form('contact', contactFormInputs)
+  const contactForm = new FormElement('contact', contactFormInputs)
 
   const contactModal = new ModalWrapper('contact', `Contactez moi<br>${photographerEntity.name}`)
   contactModal.setCloseButton('assets/icons/close.svg')
-  contactModal.addContent(contactForm.get)
+  contactModal.addContent(contactForm.element)
 
   dElements.main.appendChild(contactModal.element)
 
-  contactForm.startListeners()
+  contactForm.element.addEventListener('submit-contact', (e) => {
+    const { answers } = e.detail
 
-  contactForm.get.addEventListener('submit-contact', (e) => {
-    const answers = e.detail.answers
-    for (const entry of answers) { console.log(`${entry[0]}: ${entry[1]}`) }
-    contactForm.displaySuccesMessage(`
-            Merci ${answers.get('first-name')} pour votre message, il a bien été transmis.
-            Notre artiste vous répondra dans les meilleurs délais à l'adresse suivante:
-            ${answers.get('email')}
-        `, 'Nouveau message')
+    for (const entry of answers) {
+      console.log(`${entry[0]}: ${entry[1]}`)
+    }
+
+    contactForm.displaySucces(`
+              Merci ${answers.get('first-name')} pour votre message, il a bien été transmis.
+              Notre artiste vous répondra dans les meilleurs délais à l'adresse suivante:
+              ${answers.get('email')}
+          `, 'Nouveau message')
   })
 
   photographerHeader.contactButton.addEventListener('click', () => {

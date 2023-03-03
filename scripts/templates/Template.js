@@ -1,22 +1,45 @@
 export class Template {
-  _create (pattern) {
-    if (pattern._element) {
+  /**
+   * Construit un template à partir du modèle fourni.
+   *
+   * @typedef {Object} TemplatePattern
+   * @property {HTMLElement} _ - L'élément HTML racine du modèle.
+   * @property {string} [_textContent] - Le contenu textuel de l'élément racine du modèle.
+   * @property {Object.<string, any>} [_attributes] - Les attributs HTML de l'élément racine du modèle.
+   * @property {Object.<string, Function>} [_events] - Les écouteurs d'événements associés à l'élément racine du modèle.
+   * @property {Object.<string, TemplatePattern>} [childPropertyName] - Les enfants du modèle.
+   *
+   * @param {TemplatePattern} pattern - Le modèle à partir duquel construire le template.
+   */
+  static build (pattern) {
+    if (pattern._) {
+      // Applique les attributs définis dans _attributes.
       if (pattern._attributes) {
         for (const key in pattern._attributes) {
-          pattern._element.setAttribute(key, pattern._attributes[key])
+          pattern._.setAttribute(key, pattern._attributes[key])
         }
       }
 
+      // Ajoute les écouteurs d'événements définis dans _events.
       if (pattern._events) {
         for (const key in pattern._events) {
-          pattern._element.addEventListener(key, pattern._events[key])
+          pattern._.addEventListener(key, pattern._events[key])
         }
       }
 
+      // Définit le texte contenu dans l'élément si _textContent est défini.
+      if (pattern._textContent) {
+        pattern._.textContent = pattern._textContent
+      }
+
+      // Parcourt toutes les clés de pattern pour construire les éléments enfants.
+      // Ignore les clés qui commencent par un underscore.
+      // Appelle récursif de la méthode build sur chaque élément enfant de pattern.
+      // Ajoute l'élément enfant construit dans le DOM de l'élément parent.
       for (const key in pattern) {
-        if (key !== '_element' && key !== '_attributes' && key !== '_events') {
-          this._create(pattern[key])
-          pattern._element.appendChild(pattern[key]._element)
+        if (key.charAt(0) !== '_') {
+          this.build(pattern[key])
+          pattern._.appendChild(pattern[key]._)
         }
       }
     }
