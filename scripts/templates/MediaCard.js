@@ -3,6 +3,7 @@ import { Template } from './Template.js'
 export class MediaCard {
   constructor (entity) {
     this._likes = entity.likes
+    this._entity = entity
 
     this._template = {
       _: document.createElement('div'),
@@ -77,6 +78,14 @@ export class MediaCard {
         `
         break
     }
+  }
+
+  get likes () {
+    return this._likes
+  }
+
+  get entity () {
+    return this._entity
   }
 
   get element () {

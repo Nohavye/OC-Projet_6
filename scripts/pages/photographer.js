@@ -17,10 +17,43 @@ function getId () {
   return parseInt(params.get('id'))
 }
 
-function displayCards (mediaEntitys) {
+function formatMediasData (mediasData) {
+  const mediaEntities = []
+  mediasData.forEach(data => {
+    mediaEntities.push(new MediaEntity(data))
+  })
+  return mediaEntities
+}
+
+function createMediaCards (mediaEntities) {
+  const mediaCards = []
+  mediaEntities.forEach(entity => {
+    mediaCards.push(new MediaCard(entity))
+  })
+  return mediaCards
+}
+
+function orderMediaCards (mediaCards, orderOption) {
+  switch (orderOption) {
+    case 'popularity':
+      mediaCards.sort((a, b) => b.likes - a.likes)
+      break
+
+    case 'date':
+      mediaCards.sort((a, b) => new Date(a.entity.date) - new Date(b.entity.date))
+      break
+
+    case 'title':
+      mediaCards.sort((a, b) => a.entity.title.localeCompare(b.entity.title))
+      break
+  }
+  return mediaCards
+}
+
+function displayMediaCards (mediaCards) {
   dElements.browserSection.innerHTML = ''
-  mediaEntitys.forEach(entity => {
-    dElements.browserSection.appendChild(new MediaCard(entity).element)
+  mediaCards.forEach(mediaCard => {
+    dElements.browserSection.appendChild(mediaCard.element)
   })
 }
 
@@ -83,10 +116,11 @@ async function init () {
   })
 
   // Afficher les médias
-  const mediaEntities = []
-  mediasData.forEach(data => {
-    mediaEntities.push(new MediaEntity(data))
-  })
+  /* ------------------------------------------------------------------------------------------ */
+  /* ------------------------------------------------------------------------------------------ */
+
+  const mediaEntities = formatMediasData(mediasData)
+  let mediaCards = createMediaCards(mediaEntities)
 
   const viewer = new Viewer()
 
@@ -94,28 +128,20 @@ async function init () {
   /* ------------------------------------------------------------------------------------------ */
 
   filtreSelector.element.addEventListener('filter-option-change', (e) => {
-    switch (e.detail.option) {
-      case 'popularity':
-        mediaEntities.sort((a, b) => b.likes - a.likes)
-        displayCards(mediaEntities)
-        viewer.setPlaylist(mediaEntities)
-        break
-
-      case 'date':
-        mediaEntities.sort((a, b) => new Date(a.date) - new Date(b.date))
-        displayCards(mediaEntities)
-        viewer.setPlaylist(mediaEntities)
-        break
-
-      case 'title':
-        mediaEntities.sort((a, b) => a.title.localeCompare(b.title))
-        displayCards(mediaEntities)
-        viewer.setPlaylist(mediaEntities)
-        break
-    }
+    mediaCards = orderMediaCards(mediaCards, e.detail.option)
+    displayMediaCards(mediaCards)
+    viewer.setPlaylist(mediaCards)
   })
 
   filtreSelector.value = 'date'
+
+  document.addEventListener('likeCardClick', () => {
+    if (filtreSelector.value === 'popularity') {
+      mediaCards = orderMediaCards(mediaCards, 'popularity')
+      displayMediaCards(mediaCards)
+      viewer.setPlaylist(mediaCards)
+    }
+  })
 
   /* ------------------------------------------------------------------------------------------ */
   /* ------------------------------------------------------------------------------------------ */

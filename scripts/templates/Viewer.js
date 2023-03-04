@@ -2,7 +2,7 @@ import { Template } from './Template.js'
 
 export class Viewer {
   constructor () {
-    this._mediaEntities = null
+    this._mediaEntities = []
     this._currentIndex = null
 
     this._template = {
@@ -94,8 +94,10 @@ export class Viewer {
     Template.build(this._template)
   }
 
-  setPlaylist (mediaEntities) {
-    this._mediaEntities = mediaEntities
+  setPlaylist (mediaCards) {
+    mediaCards.forEach(mediaCard => {
+      this._mediaEntities.push(mediaCard.entity)
+    })
   }
 
   setScreen (mediaId) {
