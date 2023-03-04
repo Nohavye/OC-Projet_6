@@ -1,39 +1,60 @@
-/** Création du header photographe */
+import { Template } from './Template.js'
+
 export class PhotographerHeader {
-  #_header
-
-  /**
-     * Créer le header photographe.
-     * @param {PhotographerEntity} entity Une entité photographe.
-     */
   constructor (entity) {
-    this.#_header = document.createElement('div')
-    this.#_header.classList.add('photograph-header')
+    this._template = {
+      _: document.createElement('div'),
+      _attributes: { class: 'photographer-header' },
 
-    this.#_header.innerHTML = `
-      <div class="photographer-info">
-          <h2>${entity.name}</h2>
-          <p class="place">${entity.city}, ${entity.country}</p>
-          <p class="tagline">${entity.tagline}</p>
-      </div>
+      informations: {
+        _: document.createElement('div'),
+        _attributes: { class: 'photographer-info' },
 
-      <button class="contact_button">Contactez-moi</button>
+        title: {
+          _: document.createElement('h2'),
+          _textContent: entity.name
+        },
 
-      <div class="photographer-photo">
-          <img src="${entity.portrait.thumbnail}" alt="photo de ${entity.name}">
-      </div>
-    `
+        place: {
+          _: document.createElement('p'),
+          _textContent: `${entity.city}, ${entity.country}`,
+          _attributes: { class: 'place' }
+        },
+
+        tagline: {
+          _: document.createElement('p'),
+          _textContent: entity.tagline,
+          _attributes: { class: 'tagline' }
+        }
+      },
+
+      contactButton: {
+        _: document.createElement('button'),
+        _textContent: 'Contactez-moi',
+        _attributes: { class: 'contact-button' }
+      },
+
+      photo: {
+        _: document.createElement('div'),
+        _attributes: { class: 'photographer-photo' },
+
+        img: {
+          _: document.createElement('img'),
+          _attributes: {
+            src: entity.portrait.thumbnail,
+            alt: `photo de ${entity.name}`
+          }
+        }
+      }
+    }
+    Template.build(this._template)
   }
 
-  /**
-     * Retourne le header. */
-  get get () {
-    return this.#_header
-  }
-
-  /**
-     * Retourne le boutton du header. */
   get contactButton () {
-    return document.querySelector('.contact_button')
+    return this._template.contactButton._
+  }
+
+  get element () {
+    return this._template._
   }
 }

@@ -1,4 +1,4 @@
-.photograph-header {
+.photographer-header {
     background-color: #FAFAFA;
     padding: 50px;
     margin: 0 100px;
@@ -8,32 +8,32 @@
     align-items: center;
 }
 
-.photograph-header h2 {
+.photographer-header h2 {
     color: #d3573c;
     font-weight: 400;
     font-size: 64px;
 }
 
-.photograph-header .place {
+.photographer-header .place {
     color: #901c1c;
     font-weight: 400;
     font-size: 24px;
 }
 
-.photograph-header .tagline {
+.photographer-header .tagline {
     color: #525252;
     font-weight: 400;
     font-size: 18px;
 }
 
-.photograph-header img {
+.photographer-header img {
     height: 200px;
     width: 200px;
     border-radius: 100%;
     object-fit: cover;
 }
 
-.contact_button {
+.contact-button {
     font-size: 20px;
     font-weight: bold;
     color: white;

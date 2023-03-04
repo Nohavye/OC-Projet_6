@@ -53,7 +53,7 @@ async function init () {
 
   // Création de la bannière
   const photographerHeader = new PhotographerHeader(photographerEntity)
-  dElements.main.insertAdjacentElement('afterbegin', photographerHeader.get)
+  dElements.main.insertAdjacentElement('afterbegin', photographerHeader.element)
 
   // Création de la modale pour le formulaire
   const contactForm = new FormElement('contact', contactFormInputs)
@@ -121,7 +121,7 @@ async function init () {
   /* ------------------------------------------------------------------------------------------ */
 
   const viewerModal = new ModalWrapper('viewer')
-  viewerModal.addContent(viewer.get)
+  viewerModal.addContent(viewer.element)
 
   dElements.main.appendChild(viewerModal.element)
 
