@@ -132,7 +132,8 @@ export class OptionSelector {
   }
 
   addTo (parent) {
-    parent.insertAdjacentElement('afterbegin', this._template._)
+    // parent.insertAdjacentElement('afterbegin', this._template._)
+    parent.appendChild(this._template._)
     this._template.selector._.style.marginLeft = `${this._template.label._.clientWidth + 10}px`
     this.#initEvents()
     this.#toggleSelector()

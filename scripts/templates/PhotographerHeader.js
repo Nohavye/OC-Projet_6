@@ -50,6 +50,10 @@ export class PhotographerHeader {
     Template.build(this._template)
   }
 
+  addTo (parent) {
+    parent.appendChild(this._template._)
+  }
+
   get contactButton () {
     return this._template.contactButton._
   }

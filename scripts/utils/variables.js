@@ -3,7 +3,22 @@ import { InputText, InputTextArea } from '../templates/FormElement.js'
 export const dElements = {
   photographersSection: document.querySelector('.photographer_section'),
   main: document.querySelector('main'),
-  browserSection: document.querySelector('.media-browser')
+  get browserSection () {
+    if (document.querySelector('.media-browser')) {
+      return document.querySelector('.media-browser')
+    } else {
+      const element = document.createElement('div')
+      element.classList.add('media-browser')
+      dElements.main.appendChild(element)
+      return element
+    }
+  }
+}
+
+export const filtreOptions = {
+  popularity: { name: 'Popularité', value: 'popularity' },
+  date: { name: 'Date', value: 'date' },
+  title: { name: 'Titre', value: 'title' }
 }
 
 export const contactFormInputs = {

@@ -29,6 +29,10 @@ export class InsertBox {
     })
   }
 
+  addTo (parent) {
+    parent.appendChild(this._template._)
+  }
+
   get element () {
     return this._template._
   }
