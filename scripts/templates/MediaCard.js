@@ -80,6 +80,10 @@ export class MediaCard {
     }
   }
 
+  addTo (parent) {
+    parent.appendChild(this._template._)
+  }
+
   get likes () {
     return this._likes
   }

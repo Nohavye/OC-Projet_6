@@ -50,3 +50,11 @@ export const contactFormInputs = {
     'Ecrivez votre message ici. (30 charactères minimum)'
   )
 }
+
+export const contactSuccesMessage = (firstName, email) => {
+  return `
+    Merci ${firstName} pour votre message, il a bien été transmis.
+    Notre artiste vous répondra dans les meilleurs délais à l'adresse suivante:
+    ${email}
+  `
+}

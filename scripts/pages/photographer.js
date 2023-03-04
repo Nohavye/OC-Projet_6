@@ -1,4 +1,4 @@
-import { dElements, filtreOptions, contactFormInputs } from '../utils/variables.js'
+import { dElements, filtreOptions, contactFormInputs, contactSuccesMessage } from '../utils/variables.js'
 import { dataManager } from '../api/dataManager.js'
 import { PhotographerEntity } from '../models/PhotographerEntity.js'
 import { PhotographerHeader } from '../templates/PhotographerHeader.js'
@@ -57,19 +57,17 @@ function orderMediaCards (mediaCards, orderOption) {
 function displayMediaCards (mediaCards) {
   dElements.browserSection.innerHTML = ''
   mediaCards.forEach(mediaCard => {
-    dElements.browserSection.appendChild(mediaCard.element)
+    mediaCard.addTo(dElements.browserSection)
   })
 }
 
 function createFiltreSelector () {
   const filtreSelector = new OptionSelector('filter', 'Trier par', filtreOptions)
-  // filtreSelector.addTo(dElements.main)
   return filtreSelector
 }
 
 function createPhotographerBanner (photographerEntity) {
   const photographerBanner = new PhotographerHeader(photographerEntity)
-  // photographerBanner.addTo(dElements.main)
   return photographerBanner
 }
 
@@ -87,14 +85,11 @@ function createContactModal (photographerName) {
       console.log(`${entry[0]}: ${entry[1]}`)
     }
 
-    contactForm.displaySucces(`
-              Merci ${answers.get('first-name')} pour votre message, il a bien été transmis.
-              Notre artiste vous répondra dans les meilleurs délais à l'adresse suivante:
-              ${answers.get('email')}
-          `, 'Nouveau message')
+    contactForm.displaySucces(
+      contactSuccesMessage(answers.get('first-name'), answers.get('email')),
+      'Nouveau message'
+    )
   })
-
-  // contactModal.addTo(dElements.main)
   return contactModal
 }
 
@@ -102,14 +97,11 @@ function createViewerModal () {
   const viewer = new Viewer()
   const viewerModal = new ModalWrapper('viewer')
   viewerModal.addContent(viewer.element)
-
-  // viewerModal.addTo(dElements.main)
   return { modal: viewerModal, viewer, addTo: parent => { viewerModal.addTo(parent) } }
 }
 
 function createInsertBox (mediasData, photographerPrice) {
   const insertBox = new InsertBox(addLikes(mediasData), photographerPrice)
-  // insertBox.addTo(dElements.main)
   return insertBox
 }
 

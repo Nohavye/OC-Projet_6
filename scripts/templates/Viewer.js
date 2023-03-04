@@ -143,6 +143,10 @@ export class Viewer {
     this.setScreen()
   }
 
+  addTo (parent) {
+    parent.appendChild(this._template._)
+  }
+
   get element () {
     return this._template._
   }
