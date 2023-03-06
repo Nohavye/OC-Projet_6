@@ -1,15 +1,6 @@
-import { dElements, filtreOptions, contactFormInputs, contactSuccesMessage } from '../utils/variables.js'
-import { dataManager } from '../api/dataManager.js'
-import { PhotographerEntity } from '../models/PhotographerEntity.js'
-import { PhotographerHeader } from '../templates/PhotographerHeader.js'
-import { OptionSelector } from '../templates/OptionSelector.js'
-import { MediaEntity } from '../models/MediaEntity.js'
-import { MediaCard } from '../templates/MediaCard.js'
-import { InsertBox } from '../templates/InsertBox.js'
-import { addLikes } from '../utils/functions.js'
-import { ModalWrapper } from '../templates/ModalWrapper.js'
-import { FormElement } from '../templates/FormElement.js'
-import { Viewer } from '../templates/Viewer.js'
+import Data from '../data/DataModule.js'
+import { GlobalsforProfilePage as Globals } from '../utils/GlobalsModule.js'
+import { TemplatesforProfilePage as Templates } from '../templates/TemplatesModule.js'
 
 function getId () {
   // Récupère id du photographe dans les paramètres de la page
@@ -17,64 +8,35 @@ function getId () {
   return parseInt(params.get('id'))
 }
 
-function formatPhotographerData (photographerData) {
-  return new PhotographerEntity(photographerData)
-}
-
-function formatMediasData (mediasData) {
-  const mediaEntities = []
-  mediasData.forEach(data => {
-    mediaEntities.push(new MediaEntity(data))
-  })
-  return mediaEntities
-}
-
 function createMediaCards (mediaEntities) {
   const mediaCards = []
   mediaEntities.forEach(entity => {
-    mediaCards.push(new MediaCard(entity))
+    mediaCards.push(new Templates.MediaCard(entity))
   })
-  return mediaCards
-}
-
-function orderMediaCards (mediaCards, orderOption) {
-  switch (orderOption) {
-    case 'popularity':
-      mediaCards.sort((a, b) => b.likes - a.likes)
-      break
-
-    case 'date':
-      mediaCards.sort((a, b) => new Date(a.entity.date) - new Date(b.entity.date))
-      break
-
-    case 'title':
-      mediaCards.sort((a, b) => a.entity.title.localeCompare(b.entity.title))
-      break
-  }
   return mediaCards
 }
 
 function displayMediaCards (mediaCards) {
-  dElements.browserSection.innerHTML = ''
+  Globals.DOM.browserSection.innerHTML = ''
   mediaCards.forEach(mediaCard => {
-    mediaCard.addTo(dElements.browserSection)
+    mediaCard.addTo(Globals.DOM.browserSection)
   })
 }
 
 function createFiltreSelector () {
-  const filtreSelector = new OptionSelector('filter', 'Trier par', filtreOptions)
+  const filtreSelector = new Templates.OptionSelector('filter', 'Trier par', Globals.filter.options)
   return filtreSelector
 }
 
 function createPhotographerBanner (photographerEntity) {
-  const photographerBanner = new PhotographerHeader(photographerEntity)
+  const photographerBanner = new Templates.ProfileBanner(photographerEntity)
   return photographerBanner
 }
 
 function createContactModal (photographerName) {
-  const contactForm = new FormElement('contact', contactFormInputs)
+  const contactForm = new Templates.Form('contact', Globals.contactForm.inputs)
 
-  const contactModal = new ModalWrapper('contact', `Contactez moi<br>${photographerName}`)
+  const contactModal = new Templates.ModalWrapper('contact', `Contactez moi<br>${photographerName}`)
   contactModal.setCloseButtonImage('assets/icons/close.svg')
   contactModal.addContent(contactForm.element)
 
@@ -86,7 +48,7 @@ function createContactModal (photographerName) {
     }
 
     contactForm.displaySucces(
-      contactSuccesMessage(answers.get('first-name'), answers.get('email')),
+      Globals.contactForm.succesMessage(answers.get('first-name'), answers.get('email')),
       'Nouveau message'
     )
   })
@@ -94,30 +56,26 @@ function createContactModal (photographerName) {
 }
 
 function createViewerModal () {
-  const viewer = new Viewer()
-  const viewerModal = new ModalWrapper('viewer')
+  const viewer = new Templates.Viewer()
+  const viewerModal = new Templates.ModalWrapper('viewer')
   viewerModal.addContent(viewer.element)
   return { modal: viewerModal, viewer, addTo: parent => { viewerModal.addTo(parent) } }
 }
 
 function createInsertBox (mediasData, photographerPrice) {
-  const insertBox = new InsertBox(addLikes(mediasData), photographerPrice)
+  const insertBox = new Templates.InsertBox(Globals.addLikes(mediasData), photographerPrice)
   return insertBox
 }
 
 async function getData () {
-  await dataManager.loadData('data/photographers.json') // Chargement des données JSON.
+  await Data.Manager.loadData('data/photographers.json') // Chargement des données JSON.
   const id = getId() // Récupère id du photographe.
 
   // Récupérer et formater les données du photographe.
-  const photographer = formatPhotographerData(
-    dataManager.search('photographers', 'id', id)[0]
-  )
+  const photographer = Data.Manager.search('photographers', 'id', id, Data.Format.Profile)[0]
 
   // Récupérer et formater les données des médias.
-  const media = formatMediasData(
-    dataManager.search('media', 'photographerId', id)
-  )
+  const media = Data.Manager.search('media', 'photographerId', id, Data.Format.Media)
 
   return { photographer, media }
 }
@@ -131,7 +89,7 @@ function createComponents (data) {
     insertBox: createInsertBox(data.media, data.photographer.price) // Afficher encart
   }
 
-  Object.values(components).forEach(element => element.addTo(dElements.main))
+  Object.values(components).forEach(element => element.addTo(Globals.DOM.main))
   return components
 }
 
@@ -142,14 +100,14 @@ function initEvents (components, mediaCards) {
   })
 
   components.filtreSelector.element.addEventListener('filter-option-change', (e) => {
-    mediaCards = orderMediaCards(mediaCards, e.detail.option)
+    mediaCards = Globals.filter.sortMediaCards(mediaCards, e.detail.option)
     displayMediaCards(mediaCards)
     components.viewerModal.viewer.setPlaylist(mediaCards)
   })
 
   document.addEventListener('likeCardClick', () => {
     if (components.filtreSelector.value === 'popularity') {
-      mediaCards = orderMediaCards(mediaCards, 'popularity')
+      mediaCards = Globals.filter.sortMediaCards(mediaCards, Globals.filter.options.popularity.value)
       displayMediaCards(mediaCards)
       components.viewerModal.viewer.setPlaylist(mediaCards)
     }

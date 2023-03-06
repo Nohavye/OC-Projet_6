@@ -1,6 +1,6 @@
-import { Template } from './Template.js'
+import Template from './Template.js'
 
-export class PhotographerHeader {
+class PhotographerHeader {
   constructor (entity) {
     this._template = {
       _: document.createElement('div'),
@@ -62,3 +62,5 @@ export class PhotographerHeader {
     return this._template._
   }
 }
+
+export { PhotographerHeader as default }

@@ -1,6 +1,6 @@
-import { Template } from './Template.js'
+import Template from './Template.js'
 
-export class PhotographerCard {
+class PhotographerCard {
   constructor (entity) {
     this._template = {
       _: document.createElement('div'),
@@ -54,3 +54,5 @@ export class PhotographerCard {
     return this._template._
   }
 }
+
+export { PhotographerCard as default }

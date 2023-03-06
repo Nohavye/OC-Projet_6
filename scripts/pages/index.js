@@ -1,18 +1,15 @@
-import { dElements } from '../utils/variables.js'
-import { dataManager } from '../api/dataManager.js'
-import { PhotographerEntity } from '../models/PhotographerEntity.js'
-import { PhotographerCard } from '../templates/PhotographerCard.js'
+import Data from '../data/DataModule.js'
+import { GlobalsforIndexPage as Globals } from '../utils/GlobalsModule.js'
+import { TemplatesforIndexPage as Templates } from '../templates/TemplatesModule.js'
 
 async function init () {
   // Récupère les datas des photographes
-  await dataManager.loadData('data/photographers.json')
-  const photographersData = dataManager.getData('photographers')
+  await Data.Manager.loadData('data/photographers.json')
+  const profiles = Data.Manager.getData('photographers', Data.Format.Profile)
 
   // Affiche les cartes de photographes
-  photographersData.forEach(data => {
-    dElements.photographersSection.appendChild(
-      new PhotographerCard(new PhotographerEntity(data)).element
-    )
+  profiles.forEach(data => {
+    new Templates.ProfileCard(data).addTo(Globals.DOM.photographersSection)
   })
 }
 

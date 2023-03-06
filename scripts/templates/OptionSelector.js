@@ -1,6 +1,6 @@
-import { Template } from './Template.js'
+import Template from './Template.js'
 
-export class OptionSelector {
+class OptionSelector {
   constructor (name, label, options) {
     this._name = name
     this._isDeployed = true
@@ -156,3 +156,5 @@ export class OptionSelector {
     return this._template._
   }
 }
+
+export { OptionSelector as default }

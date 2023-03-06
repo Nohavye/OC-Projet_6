@@ -1,6 +1,6 @@
-import { Template } from './Template.js'
+import Template from './Template.js'
 
-export class Viewer {
+class Viewer {
   constructor () {
     this._mediaEntities = []
     this._currentIndex = null
@@ -151,3 +151,5 @@ export class Viewer {
     return this._template._
   }
 }
+
+export { Viewer as default }

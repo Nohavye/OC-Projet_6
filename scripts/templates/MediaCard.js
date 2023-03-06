@@ -1,6 +1,6 @@
-import { Template } from './Template.js'
+import Template from './Template.js'
 
-export class MediaCard {
+class MediaCard {
   constructor (entity) {
     this._likes = entity.likes
     this._entity = entity
@@ -96,3 +96,5 @@ export class MediaCard {
     return this._template._
   }
 }
+
+export { MediaCard as default }

@@ -1,6 +1,6 @@
-import { Template } from './Template.js'
+import Template from './Template.js'
 
-export class ModalWrapper {
+class ModalWrapper {
   constructor (name, title) {
     this._template = {
       _: document.createElement('div'),
@@ -115,3 +115,5 @@ export class ModalWrapper {
     return this._template._
   }
 }
+
+export { ModalWrapper as default }

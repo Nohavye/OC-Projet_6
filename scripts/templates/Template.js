@@ -1,4 +1,4 @@
-export class Template {
+class Template {
   /**
    * Construit un template à partir du modèle fourni.
    *
@@ -45,3 +45,5 @@ export class Template {
     }
   }
 }
+
+export { Template as default }

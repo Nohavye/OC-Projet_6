@@ -1,4 +1,4 @@
-import { Template } from './Template.js'
+import Template from './Template.js'
 
 /**
  * Classe représentant un élément d'entrée de formulaire.
@@ -87,7 +87,7 @@ class InputElement {
  * Une classe représentant un élément d'entrée de texte.
  * @extends InputElement
  */
-export class InputText extends InputElement {
+class InputText extends InputElement {
   /**
    * Crée une instance de InputText.
    * @param {string} id - L'identifiant de l'élément d'entrée.
@@ -105,7 +105,7 @@ export class InputText extends InputElement {
  * Une classe représentant un élément d'entrée de zone de texte.
  * @extends InputElement
  */
-export class InputTextArea extends InputElement {
+class InputTextArea extends InputElement {
   /**
    * Crée une instance de InputTextArea.
    * @param {string} id - L'identifiant de l'élément d'entrée.
@@ -122,7 +122,7 @@ export class InputTextArea extends InputElement {
 /**
  * Une classe représentant un élément de formulaire qui peut contenir plusieurs entrées et un bouton de soumission.
  */
-export class FormElement {
+class FormElement {
   /**
    * Crée une instance de FormElement.
    * @param {string} name - Le nom de l'élément de formulaire.
@@ -240,3 +240,5 @@ export class FormElement {
     return this._template._
   }
 }
+
+export { InputText, InputTextArea, FormElement }

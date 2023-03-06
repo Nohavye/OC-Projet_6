@@ -1,6 +1,25 @@
+import { MediaEntity, ProfileEntity } from './DataEntities.js'
+
+const Format = Object.freeze({
+  Media: Symbol('media'),
+  Profile: Symbol('profile')
+})
+
+class DataFactory {
+  constructor (data, format) {
+    switch (format) {
+      case Format.Media:
+        return new MediaEntity(data)
+
+      case Format.Profile:
+        return new ProfileEntity(data)
+    }
+  }
+}
+
 /**
  * Gestion de données JSON. */
-export class dataManager {
+class DataManager {
   static #data
 
   /**
@@ -18,9 +37,17 @@ export class dataManager {
      * @param {string} section Section de fichier JSON.
      * @returns Retourne les données compris dans la section.
      */
-  static getData (section) {
+  static getData (section, format) {
     try {
-      return this.#data[`${section}`]
+      if (typeof (format) !== 'undefined') {
+        const formatedData = []
+        this.#data[section].forEach(data => {
+          formatedData.push(new DataFactory(data, format))
+        })
+        return formatedData
+      } else {
+        return this.#data[section]
+      }
     } catch (error) {
       console.error(error)
     }
@@ -33,7 +60,7 @@ export class dataManager {
      * @param {any} value Valeur de cette propriété.
      * @returns Un tableau contenant tout les objets ayant la propriété visée à la valeur spécifiée.
      */
-  static search (section, property, value) {
+  static search (section, property, value, format) {
     const results = []
 
     try {
@@ -41,7 +68,11 @@ export class dataManager {
 
       for (const element of data) {
         if (element[`${property}`] === value) {
-          results.push(element)
+          if (typeof (format) !== 'undefined') {
+            results.push(new DataFactory(element, format))
+          } else {
+            results.push(element)
+          }
         }
       }
 
@@ -51,3 +82,5 @@ export class dataManager {
     }
   }
 }
+
+export { Format, DataManager }

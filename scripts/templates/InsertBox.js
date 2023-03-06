@@ -1,6 +1,6 @@
-import { Template } from './Template.js'
+import Template from './Template.js'
 
-export class InsertBox {
+class InsertBox {
   constructor (likes, price) {
     this._likes = likes
 
@@ -37,3 +37,5 @@ export class InsertBox {
     return this._template._
   }
 }
+
+export { InsertBox as default }
