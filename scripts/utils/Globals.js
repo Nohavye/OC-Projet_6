@@ -2,9 +2,9 @@ import { InputText, InputTextArea } from '../templates/TemplatesModule.js'
 
 const DOM = {
 
-  profilesSection: document.querySelector('.profiles-section'),
-
   main: document.querySelector('main'),
+
+  profilesSection: document.querySelector('.profiles-section'),
 
   get browserSection () {
     if (document.querySelector('.media-browser')) {

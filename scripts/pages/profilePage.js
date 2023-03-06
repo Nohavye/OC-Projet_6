@@ -23,15 +23,6 @@ function displayMediaCards (mediaCards) {
   })
 }
 
-function createFiltreSelector () {
-  const filtreSelector = new Templates.OptionSelector('filter', 'Trier par', Globals.filter.options)
-  return filtreSelector
-}
-
-function createProfileBanner (profileEntity) {
-  return new Templates.ProfileBanner(profileEntity)
-}
-
 function createContactModal (profileName) {
   const contactForm = new Templates.Form('contact', Globals.contactForm.inputs)
 
@@ -61,11 +52,6 @@ function createViewerModal () {
   return { modal: viewerModal, viewer, addTo: parent => { viewerModal.addTo(parent) } }
 }
 
-function createInsertBox (mediasData, profilePrice) {
-  const insertBox = new Templates.InsertBox(Globals.addLikes(mediasData), profilePrice)
-  return insertBox
-}
-
 async function getData () {
   await Data.Manager.loadData('data/photographers.json') // Chargement des données JSON.
   const id = getId() // Récupère id du photographe.
@@ -81,11 +67,11 @@ async function getData () {
 
 function createComponents (data) {
   const components = {
-    profileBanner: createProfileBanner(data.profile), // Création de la bannière
-    filtreSelector: createFiltreSelector(), // Création filtre
+    profileBanner: new Templates.ProfileBanner(data.profile), // Création de la bannière
+    filtreSelector: new Templates.OptionSelector('filter', 'Trier par', Globals.filter.options), // Création filtre
     contactModal: createContactModal(data.profile.name), // Création de la modale pour le formulaire
     viewerModal: createViewerModal(), // Création de la modale pour le viewer
-    insertBox: createInsertBox(data.media, data.profile.price) // Afficher encart
+    insertBox: new Templates.InsertBox(Globals.addLikes(data.media), data.profile.price) // Afficher encart
   }
 
   Object.values(components).forEach(element => element.addTo(Globals.DOM.main))
