@@ -81,10 +81,6 @@
     text-overflow: ellipsis;
 }
 
-
-
-
-
 /* FILTRE */
 
 .filter-option-selector {
@@ -101,31 +97,7 @@
 
 .filter-selector {
     background-color: #901C1C;
-    width: 200px;
+    width: 150px;
     border-radius: 5px;
-}
-
-/************************************/
-
-._filter .filter-select:hover {
-    height: max-content;
-}
-
-._filter .filter-select:hover > .option-container{
-    border-top: 1px solid white;
-}
-
-/************************************/
-
-._filter-select div {
-    padding: 10px;
-}
-
-._option-container-selected {
-    display: flex;
-    justify-content: space-between;
-}
-
-._option-container-selected img {
-    width: 16px;
+    padding: 10px 30px;
 }

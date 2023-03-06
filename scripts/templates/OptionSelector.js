@@ -35,7 +35,6 @@ class OptionSelector {
             position: absolute;
             overflow: hidden;
             margin-left: 60px;
-            padding: 10px;
             cursor: pointer;
           `
         }
@@ -55,10 +54,9 @@ class OptionSelector {
       const optionElement = document.createElement('option')
       optionElement.setAttribute('value', option.value)
       optionElement.setAttribute('style', `
-        padding: 10px;
+        padding: 10px 0;
         display: flex;
         justify-content: space-between;
-        gap: 60px;
       `)
 
       optionElement.innerHTML = `<p>${option.name}</p>`
@@ -70,6 +68,11 @@ class OptionSelector {
   #initSelector () {
     this._value = this._optionElements[0].value
     this._optionElements[0].insertAdjacentElement('beforeend', this._arrowElement)
+    this._optionElements[0].style.borderTop = '0'
+
+    for (let i = 1; i < this._optionElements.length; i++) {
+      this._optionElements[i].style.borderTop = '2px solid white'
+    }
 
     this._template.selector._.innerHTML = ''
     for (const optionElement of this._optionElements) {
