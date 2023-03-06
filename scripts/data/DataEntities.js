@@ -7,7 +7,7 @@ class MediaEntity {
      */
   constructor (data) {
     this._id = data.id
-    this._photographerId = data.photographerId
+    this._profileId = data.photographerId
     this._title = data.title
     this._file = data.image
 
@@ -31,8 +31,8 @@ class MediaEntity {
     return this._id
   }
 
-  get photographerId () {
-    return this._photographerId
+  get profileId () {
+    return this._profileId
   }
 
   get title () {
@@ -40,7 +40,7 @@ class MediaEntity {
   }
 
   get file () {
-    return `assets/photographers/photos/${this._photographerId}/${this._file}`
+    return `assets/photographers/photos/${this._profileId}/${this._file}`
   }
 
   get fileType () {

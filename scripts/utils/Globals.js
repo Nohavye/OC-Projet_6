@@ -2,7 +2,7 @@ import { InputText, InputTextArea } from '../templates/TemplatesModule.js'
 
 const DOM = {
 
-  photographersSection: document.querySelector('.photographer_section'),
+  profilesSection: document.querySelector('.profiles-section'),
 
   main: document.querySelector('main'),
 

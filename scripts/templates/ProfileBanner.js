@@ -1,14 +1,13 @@
 import Template from './Template.js'
 
-class PhotographerHeader {
+class ProfileBanner {
   constructor (entity) {
     this._template = {
       _: document.createElement('div'),
-      _attributes: { class: 'photographer-header' },
+      _attributes: { class: 'profile-banner' },
 
       informations: {
         _: document.createElement('div'),
-        _attributes: { class: 'photographer-info' },
 
         title: {
           _: document.createElement('h2'),
@@ -36,7 +35,6 @@ class PhotographerHeader {
 
       photo: {
         _: document.createElement('div'),
-        _attributes: { class: 'photographer-photo' },
 
         img: {
           _: document.createElement('img'),
@@ -63,4 +61,4 @@ class PhotographerHeader {
   }
 }
 
-export { PhotographerHeader as default }
+export { ProfileBanner as default }

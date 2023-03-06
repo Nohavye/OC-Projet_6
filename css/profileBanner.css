@@ -1,4 +1,4 @@
-.photographer-header {
+.profile-banner {
     background-color: #FAFAFA;
     padding: 50px;
     margin: 0 100px;
@@ -8,25 +8,25 @@
     align-items: center;
 }
 
-.photographer-header h2 {
+.profile-banner h2 {
     color: #d3573c;
     font-weight: 400;
     font-size: 64px;
 }
 
-.photographer-header .place {
+.profile-banner .place {
     color: #901c1c;
     font-weight: 400;
     font-size: 24px;
 }
 
-.photographer-header .tagline {
+.profile-banner .tagline {
     color: #525252;
     font-weight: 400;
     font-size: 18px;
 }
 
-.photographer-header img {
+.profile-banner img {
     height: 200px;
     width: 200px;
     border-radius: 100%;

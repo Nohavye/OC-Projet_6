@@ -28,15 +28,14 @@ function createFiltreSelector () {
   return filtreSelector
 }
 
-function createPhotographerBanner (photographerEntity) {
-  const photographerBanner = new Templates.ProfileBanner(photographerEntity)
-  return photographerBanner
+function createProfileBanner (profileEntity) {
+  return new Templates.ProfileBanner(profileEntity)
 }
 
-function createContactModal (photographerName) {
+function createContactModal (profileName) {
   const contactForm = new Templates.Form('contact', Globals.contactForm.inputs)
 
-  const contactModal = new Templates.ModalWrapper('contact', `Contactez moi<br>${photographerName}`)
+  const contactModal = new Templates.ModalWrapper('contact', `Contactez moi<br>${profileName}`)
   contactModal.setCloseButtonImage('assets/icons/close.svg')
   contactModal.addContent(contactForm.element)
 
@@ -62,8 +61,8 @@ function createViewerModal () {
   return { modal: viewerModal, viewer, addTo: parent => { viewerModal.addTo(parent) } }
 }
 
-function createInsertBox (mediasData, photographerPrice) {
-  const insertBox = new Templates.InsertBox(Globals.addLikes(mediasData), photographerPrice)
+function createInsertBox (mediasData, profilePrice) {
+  const insertBox = new Templates.InsertBox(Globals.addLikes(mediasData), profilePrice)
   return insertBox
 }
 
@@ -72,21 +71,21 @@ async function getData () {
   const id = getId() // Récupère id du photographe.
 
   // Récupérer et formater les données du photographe.
-  const photographer = Data.Manager.search('photographers', 'id', id, Data.Format.Profile)[0]
+  const profile = Data.Manager.search('photographers', 'id', id, Data.Format.Profile)[0]
 
   // Récupérer et formater les données des médias.
   const media = Data.Manager.search('media', 'photographerId', id, Data.Format.Media)
 
-  return { photographer, media }
+  return { profile, media }
 }
 
 function createComponents (data) {
   const components = {
-    photographerBanner: createPhotographerBanner(data.photographer), // Création de la bannière
+    profileBanner: createProfileBanner(data.profile), // Création de la bannière
     filtreSelector: createFiltreSelector(), // Création filtre
-    contactModal: createContactModal(data.photographer.name), // Création de la modale pour le formulaire
+    contactModal: createContactModal(data.profile.name), // Création de la modale pour le formulaire
     viewerModal: createViewerModal(), // Création de la modale pour le viewer
-    insertBox: createInsertBox(data.media, data.photographer.price) // Afficher encart
+    insertBox: createInsertBox(data.media, data.profile.price) // Afficher encart
   }
 
   Object.values(components).forEach(element => element.addTo(Globals.DOM.main))
@@ -95,7 +94,7 @@ function createComponents (data) {
 
 function initEvents (components, mediaCards) {
   // Initialisation des évènements
-  components.photographerBanner.contactButton.addEventListener('click', () => {
+  components.profileBanner.contactButton.addEventListener('click', () => {
     components.contactModal.show()
   })
 
@@ -122,7 +121,7 @@ function initEvents (components, mediaCards) {
 async function init () {
   // Chargement des data JSON
   const data = await getData()
-  const components = createComponents(data)
+  const components = createComponents(await getData())
   const mediaCards = createMediaCards(data.media) // Création des cartes média
   initEvents(components, mediaCards)
   components.filtreSelector.value = 'date'

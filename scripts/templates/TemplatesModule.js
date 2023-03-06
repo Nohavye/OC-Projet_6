@@ -3,8 +3,8 @@ import InsertBox from './InsertBox.js'
 import MediaCard from './MediaCard.js'
 import ModalWrapper from './ModalWrapper.js'
 import OptionSelector from './OptionSelector.js'
-import ProfileBanner from './PhotographerHeader.js'
-import ProfileCard from './PhotographerCard.js'
+import ProfileBanner from './ProfileBanner.js'
+import ProfileCard from './ProfileCard.js'
 import Viewer from './Viewer.js'
 
 const Templates = {

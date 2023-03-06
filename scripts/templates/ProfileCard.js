@@ -1,14 +1,14 @@
 import Template from './Template.js'
 
-class PhotographerCard {
+class ProfileCard {
   constructor (entity) {
     this._template = {
       _: document.createElement('div'),
-      _attributes: { class: 'photographerCard' },
+      _attributes: { class: 'profile-card' },
 
       link: {
         _: document.createElement('a'),
-        _attributes: { href: `photographer.html?id=${entity.id}` },
+        _attributes: { href: `profilePage.html?id=${entity.id}` },
 
         photo: {
           _: document.createElement('img'),
@@ -55,4 +55,4 @@ class PhotographerCard {
   }
 }
 
-export { PhotographerCard as default }
+export { ProfileCard as default }

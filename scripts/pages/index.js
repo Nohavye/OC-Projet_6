@@ -9,7 +9,7 @@ async function init () {
 
   // Affiche les cartes de photographes
   profiles.forEach(data => {
-    new Templates.ProfileCard(data).addTo(Globals.DOM.photographersSection)
+    new Templates.ProfileCard(data).addTo(Globals.DOM.profilesSection)
   })
 }
 
