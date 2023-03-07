@@ -1,6 +1,12 @@
 import Template from './Template.js'
 
 class OptionSelector {
+  /**
+   * Représente un composant de sélecteur d'options.
+   * @param {string} name - Le nom du sélecteur d'options.
+   * @param {string} label - L'étiquette à afficher.
+   * @param {Object} options - Les options à afficher dans le sélecteur.
+   */
   constructor (name, label, options) {
     this._name = name
     this._isDeployed = true
@@ -47,6 +53,10 @@ class OptionSelector {
     this.#initSelector()
   }
 
+  /**
+   * Initialise les options du sélecteur.
+   * @param {Object} options - Les options à afficher dans le sélecteur.
+   */
   #initOptions (options) {
     const optionsArray = Object.values(options)
 
@@ -65,6 +75,10 @@ class OptionSelector {
     }
   }
 
+  /**
+   * Initialise le sélecteur avec la première option comme option sélectionnée par défaut,
+   * configure la flèche de sélection, définit les styles.
+   */
   #initSelector () {
     this._value = this._optionElements[0].value
     this._optionElements[0].insertAdjacentElement('beforeend', this._arrowElement)
@@ -80,6 +94,9 @@ class OptionSelector {
     }
   }
 
+  /**
+   * Initialise les événements pour chaque option du sélecteur et pour le sélecteur lui-même.
+   */
   #initEvents () {
     for (const option of this._optionElements) {
       option.addEventListener('click', () => {
@@ -104,6 +121,10 @@ class OptionSelector {
     })
   }
 
+  /**
+   * Change l'état de déploiement du sélecteur (déployé ou non déployé),
+   * ajuste la hauteur du sélecteur et la flèche de sélection.
+   */
   #toggleSelector () {
     if (this._isDeployed) {
       this._isDeployed = false
@@ -118,6 +139,10 @@ class OptionSelector {
     }
   }
 
+  /**
+   * Réorganise le tableau d'options pour placer l'option sélectionnée en première position.
+   * @param {string} value - La valeur de l'option sélectionnée.
+   */
   #orderOptions (value) {
     let seletedItem
     let index = 0
@@ -134,14 +159,22 @@ class OptionSelector {
     this._optionElements.splice(0, 0, seletedItem.option)
   }
 
+  /**
+   * Ajoute l'élément HTML correspondant à l'instance de la classe
+   * `OptionSelector` dans un élément parent donné. Initialise les événements.
+   * @param {HTMLElement} parent - L'élément HTML parent dans lequel ajouter le sélecteur d'options.
+   */
   addTo (parent) {
-    // parent.insertAdjacentElement('afterbegin', this._template._)
     parent.appendChild(this._template._)
     this._template.selector._.style.marginLeft = `${this._template.label._.clientWidth + 10}px`
     this.#initEvents()
     this.#toggleSelector()
   }
 
+  /**
+   * Définit la valeur actuelle de l'option sélectionnée.
+   * @param {string} value - La valeur de l'option à sélectionner.
+   */
   set value (value) {
     this.#orderOptions(value)
     this.#initSelector()
@@ -151,10 +184,18 @@ class OptionSelector {
     }))
   }
 
+  /**
+   * Récupère la valeur actuelle de l'option sélectionnée.
+   * @returns {string} - La valeur de l'option sélectionnée.
+   */
   get value () {
     return this._value
   }
 
+  /**
+   * Récupère l'élément HTML correspondant à l'instance du composant.
+   * @returns {HTMLElement} L'élément HTML correspondant à l'instance du composant.
+   */
   get element () {
     return this._template._
   }

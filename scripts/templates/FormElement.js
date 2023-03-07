@@ -2,10 +2,12 @@ import Template from './Template.js'
 
 /**
  * Classe représentant un élément d'entrée de formulaire.
+ * @class
  */
 class InputElement {
   /**
    * Constructeur de la classe InputElement.
+   * @constructor
    * @param {string} tag - La balise HTML de l'élément d'entrée.
    * @param {string} label - Le texte du label associé à l'élément d'entrée.
    * @param {object} attributes - Les attributs de l'élément d'entrée.
@@ -120,13 +122,16 @@ class InputTextArea extends InputElement {
 }
 
 /**
- * Une classe représentant un élément de formulaire qui peut contenir plusieurs entrées et un bouton de soumission.
+ * Une classe représentant un élément de formulaire qui peut
+ * contenir plusieurs entrées et un bouton de soumission.
+ * @class
  */
 class FormElement {
   /**
    * Crée une instance de FormElement.
    * @param {string} name - Le nom de l'élément de formulaire.
-   * @param {Object.<string, InputElement>} inputsElements - Un objet contenant les entrées de l'élément de formulaire sous la forme d'une classe héritée de la classe InputElement.
+   * @param {Object.<string, InputElement>} inputsElements - Un objet contenant les entrées de l'élément
+   * de formulaire sous la forme d'une classe héritée de la classe InputElement.
    */
   constructor (name, inputsElements) {
     this._inputElements = inputsElements

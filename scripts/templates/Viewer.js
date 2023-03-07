@@ -1,5 +1,9 @@
 import Template from './Template.js'
 
+/**
+ * Cette classe représente un viewer de médias qui permet d'afficher une liste
+ * de médias sous forme d'une diapositive. Les médias peuvent être des images ou des vidéos.
+ */
 class Viewer {
   constructor () {
     this._mediaEntities = []
@@ -94,12 +98,20 @@ class Viewer {
     Template.build(this._template)
   }
 
+  /**
+   * Définit la liste de lecture pour le visualiseur.
+   * @param {Array} mediaCards - Un tableau d'objets de carte de média.
+   */
   setPlaylist (mediaCards) {
     mediaCards.forEach(mediaCard => {
       this._mediaEntities.push(mediaCard.entity)
     })
   }
 
+  /**
+   * Met à jour l'affichage de l'écran avec le fichier multimédia correspondant à l'ID de média spécifié.
+   * @param {number} mediaId - L'identifiant de l'entité multimédia à afficher.
+   */
   setScreen (mediaId) {
     if (typeof (mediaId) !== 'undefined') {
       for (let i = 0; i < this._mediaEntities.length; i++) {
@@ -143,10 +155,18 @@ class Viewer {
     this.setScreen()
   }
 
+  /**
+   * Ajoute le viewer à un élément parent spécifié.
+   * @param {HTMLElement} parent - L'élément HTML dans lequel ajouter le viewer.
+   */
   addTo (parent) {
     parent.appendChild(this._template._)
   }
 
+  /**
+   * Retourne l'élément HTML principal du viewer.
+   * @returns {HTMLElement} - L'élément HTML principal du viewer.
+   */
   get element () {
     return this._template._
   }

@@ -1,6 +1,16 @@
 import Template from './Template.js'
 
+/**
+ * Classe pour créer et gérer une fenêtre modale.
+ * @class
+ */
 class ModalWrapper {
+  /**
+   * Crée une instance de ModalWrapper.
+   * @constructor
+   * @param {string} name - Le nom de la fenêtre modale pour ajouter une classe CSS personnalisée.
+   * @param {string} [title] - Le titre de la fenêtre modale.
+   */
   constructor (name, title) {
     this._template = {
       _: document.createElement('div'),
@@ -91,26 +101,48 @@ class ModalWrapper {
     Template.build(this._template)
   }
 
+  /**
+   * Ajoute la fenêtre modale au parent spécifié.
+   * @param {HTMLElement} parent - L'élément parent où la fenêtre modale doit être ajoutée.
+   */
   addTo (parent) {
     parent.appendChild(this._template._)
   }
 
+  /**
+   * Définit l'image du bouton de fermeture.
+   * @param {string} filePath - Le chemin de l'image à définir pour le bouton de fermeture.
+   */
   setCloseButtonImage (filePath) {
     this._template.box.header.closeButton._.src = filePath
   }
 
+  /**
+   * Ajoute le contenu spécifié à la fenêtre modale.
+   * @param {HTMLElement} element - L'élément à ajouter au contenu de la fenêtre modale.
+   */
   addContent (element) {
     this._template.box.contentBox._.appendChild(element)
   }
 
+  /**
+   * Affiche la fenêtre modale.
+   */
   show () {
     this._template._.style.display = 'flex'
   }
 
+  /**
+   * Masque la fenêtre modale.
+   */
   hide () {
     this._template._.style.display = 'none'
   }
 
+  /**
+   * L'élément DOM de la fenêtre modale.
+   * @returns {HTMLElement} - L'élément HTML de la fenêtre modale.
+   */
   get element () {
     return this._template._
   }

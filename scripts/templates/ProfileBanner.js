@@ -1,6 +1,13 @@
 import Template from './Template.js'
 
+/**
+ * Représente une bannière de profil.
+ */
 class ProfileBanner {
+  /**
+   * Crée une instance de ProfileBanner.
+   * @param {ProfileEntity} entity - Une entité de profil.
+   */
   constructor (entity) {
     this._template = {
       _: document.createElement('div'),
@@ -48,14 +55,26 @@ class ProfileBanner {
     Template.build(this._template)
   }
 
+  /**
+   * Ajoute la bannière de profil à un élément parent.
+   * @param {HTMLElement} parent - L'élément parent où ajouter la bannière de profil.
+   */
   addTo (parent) {
     parent.appendChild(this._template._)
   }
 
+  /**
+   * Retourne le bouton de contact de la bannière de profil.
+   * @returns {HTMLElement} - Le bouton de contact.
+   */
   get contactButton () {
     return this._template.contactButton._
   }
 
+  /**
+   * Retourne l'élément racine de la bannière de profil.
+   * @returns {HTMLElement} - La bannière.
+   */
   get element () {
     return this._template._
   }

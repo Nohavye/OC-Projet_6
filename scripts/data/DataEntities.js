@@ -1,10 +1,12 @@
 /**
- * Constructor Pattern: Formatage des données relative au média */
+ * Représente une entité média.
+ * Cette classe permet de créer des instances d'entités média à partir des données fournies.
+ */
 class MediaEntity {
   /**
-     * Créer une entité média.
-     * @param {object} data Données d'un média.
-     */
+   * Crée une instance de MediaEntity.
+   * @param {Object} data - Les données à utiliser pour créer l'entité.
+   */
   constructor (data) {
     this._id = data.id
     this._profileId = data.photographerId
@@ -61,12 +63,14 @@ class MediaEntity {
 }
 
 /**
- * Constructor Pattern: Formatage des données relative au photographe */
+ * Représente une entité profil.
+ * Cette classe permet de créer des instances d'entités profil à partir des données fournies.
+ */
 class ProfileEntity {
   /**
-     * Créer une entité photographe.
-     * @param {object} data Données d'un photographe.
-     */
+   * Crée une instance de ProfileEntity.
+   * @param {Object} data - Les données à utiliser pour créer l'entité.
+   */
   constructor (data) {
     this._name = data.name
     this._id = data.id

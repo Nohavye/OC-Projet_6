@@ -1,6 +1,14 @@
 import Template from './Template.js'
 
+/**
+ * Cette classe représente une carte de profil.
+ */
 class ProfileCard {
+  /**
+   * Crée une instance de ProfileCard.
+   * @constructor
+   * @param {object} entity - Une entité de profil.
+   */
   constructor (entity) {
     this._template = {
       _: document.createElement('div'),
@@ -46,10 +54,18 @@ class ProfileCard {
     Template.build(this._template)
   }
 
+  /**
+   * Ajoute la carte de profil à un élément parent.
+   * @param {HTMLElement} parent - L'élément parent auquel ajouter la carte de profil.
+   */
   addTo (parent) {
     parent.appendChild(this._template._)
   }
 
+  /**
+   * Retourne l'élément racine de la carte de profil.
+   * @returns {HTMLElement} L'élément racine de la carte de profil.
+   */
   get element () {
     return this._template._
   }

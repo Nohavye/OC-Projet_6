@@ -1,3 +1,6 @@
+/**
+ * Permet la construction d'objets HTML complèxes à partir d'un modèle.
+ */
 class Template {
   /**
    * Construit un template à partir du modèle fourni.
@@ -32,10 +35,10 @@ class Template {
         pattern._.textContent = pattern._textContent
       }
 
-      // Parcourt toutes les clés de pattern pour construire les éléments enfants.
-      // Ignore les clés qui commencent par un underscore.
-      // Appelle récursif de la méthode build sur chaque élément enfant de pattern.
-      // Ajoute l'élément enfant construit dans le DOM de l'élément parent.
+      /* Parcourt toutes les clés de pattern pour construire les éléments enfants.
+         Ignore les clés qui commencent par un underscore.
+         Appelle récursif de la méthode build sur chaque élément enfant de pattern.
+         Ajoute l'élément enfant construit dans le DOM de l'élément parent. */
       for (const key in pattern) {
         if (key.charAt(0) !== '_') {
           this.build(pattern[key])

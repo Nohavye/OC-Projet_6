@@ -1,6 +1,14 @@
 import Template from './Template.js'
 
+/**
+ * Représente une carte pour afficher un média (image ou vidéo)
+ * avec son titre et son nombre de likes.
+ */
 class MediaCard {
+  /**
+   * Crée une instance de MediaCard.
+   * @param {MediaEntity} entity - L'Entité représentant le média.
+   */
   constructor (entity) {
     this._likes = entity.likes
     this._entity = entity
@@ -80,18 +88,34 @@ class MediaCard {
     }
   }
 
+  /**
+   * Ajoute la carte au parent spécifié.
+   * @param {HTMLElement} parent - L'élément HTML parent.
+   */
   addTo (parent) {
     parent.appendChild(this._template._)
   }
 
+  /**
+   * Retourne le nombre de likes du média.
+   * @returns {number} - Le nombre de likes.
+   */
   get likes () {
     return this._likes
   }
 
+  /**
+   * Retourne l'objet représentant le média.
+   * @returns {MediaEntity} - L'objet représentant le média.
+   */
   get entity () {
     return this._entity
   }
 
+  /**
+   * Retourne l'élément HTML correspondant à la carte.
+   * @returns {HTMLElement} - L'élément HTML de la carte.
+   */
   get element () {
     return this._template._
   }
