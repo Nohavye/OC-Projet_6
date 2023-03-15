@@ -12,42 +12,53 @@ class ProfileCard {
   constructor (entity) {
     this._template = {
       _: document.createElement('div'),
-      _attributes: { class: 'profile-card' },
+      _attributes: {
+        class: 'profile-card',
+        role: 'listitem'
+      },
 
       link: {
         _: document.createElement('a'),
-        _attributes: { href: `profilePage.html?id=${entity.id}` },
+        _attributes: {
+          href: `profilePage.html?id=${entity.id}`,
+          role: 'link',
+          'aria-label': `Accéder au profil de ${entity.name}`
+        },
 
         photo: {
           _: document.createElement('img'),
           _attributes: {
             src: entity.portrait.thumbnail,
-            alt: `photo de ${entity.name}`
+            alt: `Photo de profil de ${entity.name}`
           }
         },
 
         title: {
           _: document.createElement('h2'),
           _textContent: entity.name
+        },
+
+        aside: {
+          _: document.createElement('aside'),
+
+          place: {
+            _: document.createElement('p'),
+            _textContent: `${entity.city}, ${entity.country}`,
+            _attributes: { class: 'place' }
+          },
+
+          tagline: {
+            _: document.createElement('p'),
+            _textContent: entity.tagline,
+            _attributes: { class: 'tagline' }
+          },
+
+          price: {
+            _: document.createElement('p'),
+            _textContent: `${entity.price} € / jour`,
+            _attributes: { class: 'price' }
+          }
         }
-      },
-
-      place: {
-        _: document.createElement('p'),
-        _textContent: `${entity.city}, ${entity.country}`,
-        _attributes: { class: 'place' }
-      },
-
-      tagline: {
-        _: document.createElement('p'),
-        _textContent: entity.tagline,
-        _attributes: { class: 'tagline' }
-      },
-
-      price: {
-        _: document.createElement('p'),
-        _textContent: `${entity.price} € / jour`,
-        _attributes: { class: 'price' }
       }
     }
 
@@ -68,6 +79,14 @@ class ProfileCard {
    */
   get element () {
     return this._template._
+  }
+
+  /**
+   * Retourne l'élément 'link' de la carte de profil.
+   * @returns {HTMLElement} L'élément 'link' de la carte de profil.
+   */
+  get link () {
+    return this._template.link._
   }
 }
 

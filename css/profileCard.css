@@ -11,6 +11,24 @@
     text-decoration: none;
 }
 
+.profile-card a:focus {
+    outline: none;
+    border-radius: 10px;
+    background-color: #eeeeee;
+    z-index: 1;
+    width: 400px;
+}
+
+.profile-card a:focus > img {
+    scale: 1.2;
+    rotate: 24deg;
+}
+
+.profile-card a:focus > h2 {
+    scale: 1.1;
+    font-weight: bolder;
+}
+
 .profile-card a:hover > img {
     scale: 1.2;
     rotate: 24deg;

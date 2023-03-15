@@ -12,9 +12,12 @@ class ModalWrapper {
    * @param {string} [title] - Le titre de la fenêtre modale.
    */
   constructor (name, title) {
+    this._tabExcludedElements = null
+
     this._template = {
       _: document.createElement('div'),
       _attributes: {
+        role: 'dialog',
 
         style: `
           position: fixed; z-index: 1;
@@ -48,6 +51,7 @@ class ModalWrapper {
               height: max-content;
               display: flex;
               align-items: start;
+              justify-content: space-between;
             `
           },
 
@@ -68,13 +72,21 @@ class ModalWrapper {
             _attributes: {
               src: 'assets/icons/close_colortheme.svg',
 
-              style: `
-                cursor: pointer;
-              `
+              title: 'Fermer la fenêtre',
+              alt: 'Fermer la fenêtre',
+              role: 'button',
+              tabindex: '0',
+              style: 'cursor: pointer;'
             },
             _events: {
               click: () => {
                 this.hide()
+              },
+
+              keyup: (e) => {
+                if (e.key === 'Enter') {
+                  this.hide()
+                }
               }
             }
           }
@@ -122,21 +134,42 @@ class ModalWrapper {
    * @param {HTMLElement} element - L'élément à ajouter au contenu de la fenêtre modale.
    */
   addContent (element) {
+    element.addEventListener('closeEvent', () => {
+      this.hide()
+    })
     this._template.box.contentBox._.appendChild(element)
   }
 
   /**
    * Affiche la fenêtre modale.
    */
-  show () {
+  show (tabExcludedElements) {
+    this._focusedElement = document.activeElement
+
+    if (typeof (tabExcludedElements) !== 'undefined') {
+      this._tabExcludedElements = tabExcludedElements
+
+      this._tabExcludedElements.forEach((element) => {
+        element.setAttribute('tabindex', '-1')
+      })
+    }
+
     this._template._.style.display = 'flex'
+    this._template.box.contentBox._.childNodes[0].focus()
   }
 
   /**
    * Masque la fenêtre modale.
    */
   hide () {
+    if (this._tabExcludedElements !== null) {
+      this._tabExcludedElements.forEach((element) => {
+        element.setAttribute('tabindex', '0')
+      })
+    }
+
     this._template._.style.display = 'none'
+    this._focusedElement.focus()
   }
 
   /**

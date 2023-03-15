@@ -2,13 +2,18 @@
     margin: 0;
 }
 
+a {
+    text-decoration: none;
+    color: black;
+}
+
 body {
     font-family: "DM Sans", sans-serif;
     margin: 0;
 }
 
 
-header {
+header[role="banner"] {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -21,9 +26,12 @@ h1 {
     margin-right: 100px;
 }
 
+.logo-link {
+    margin-left: 100px;
+}
+
 .logo {
     height: 50px;
-    margin-left: 100px;
 }
 
 .profiles-section {

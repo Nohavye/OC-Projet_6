@@ -77,27 +77,26 @@ async function getData () {
 
 // Crée les différents composants de la page.
 function createComponents (data) {
-  const components = {
+  const PageComponents = {
     profileBanner: new Templates.ProfileBanner(data.profile), // Création de la bannière.
     filtreSelector: new Templates.OptionSelector('filter', 'Trier par', Globals.filter.options), // Création filtre.
-    contactModal: createContactModal(data.profile.name), // Création de la modale pour le formulaire.
-    viewerModal: createViewerModal(), // Création de la modale pour le viewer.
     insertBox: new Templates.InsertBox(Globals.addLikes(data.media), data.profile.price) // Création de l'encart.
   }
 
+  const modalComponents = {
+    contactModal: createContactModal(data.profile.name), // Création de la modale pour le formulaire.
+    viewerModal: createViewerModal() // Création de la modale pour le viewer.
+  }
+
   // Ajoute chaque élément à la section principale de la page.
-  Object.values(components).forEach(element => element.addTo(Globals.DOM.main))
-  return components
+  Object.values(PageComponents).forEach(element => element.addTo(Globals.DOM.main))
+  Object.values(modalComponents).forEach(element => element.addTo(Globals.DOM.body))
+  return { ...PageComponents, ...modalComponents }
 }
 
 // Initialisation des évènements.
 function initEvents (components, mediaCards) {
-  // Ajout d'un événement au clic sur le bouton de contact du photographe.
-  components.profileBanner.contactButton.addEventListener('click', () => {
-    // Affichage de la modale de contact.
-    components.contactModal.show()
-  })
-
+  // Ajout d'un évènement pour le changement d'état du filtre
   components.filtreSelector.element.addEventListener('filter-option-change', (e) => {
     // Tri des cartes média en fonction de l'option sélectionnée dans le filtre.
     mediaCards = Globals.filter.sortMediaCards(mediaCards, e.detail.option)
@@ -108,33 +107,54 @@ function initEvents (components, mediaCards) {
     // Définition des cartes triées comme la playlist du viewer.
     components.viewerModal.viewer.setPlaylist(mediaCards)
   })
+  components.filtreSelector.value = 'date' // Initialise le filtre de tri par date.
+
+  // Création d'un tableau contenant les éléments à exclure de
+  // la tabulation lorsqu'une modale est ouverte.
+  const tabExcludedElements = [
+    document.querySelector('.logo-link'),
+    components.profileBanner.contactButton,
+    document.querySelector('.filter-selector')
+  ]
+    .concat(Array.from(document.querySelectorAll('.media-link')))
+    .concat(Array.from(document.querySelectorAll('.likes')))
+
+  // Ajout d'un événement au clic sur le bouton de contact du photographe.
+  components.profileBanner.contactButton.addEventListener('click', () => {
+    // Affichage de la modale de contact.
+    components.contactModal.show(tabExcludedElements)
+  })
+
+  // Ajout d'un événement au clic sur une carte média.
+  document.addEventListener('mediaCardSelect', (e) => {
+    // Définition de l'écran du viewer comme étant la carte média cliquée.
+    components.viewerModal.viewer.setScreen(e.detail.mediaId)
+
+    // Affichage du viewer en mode modal.
+    components.viewerModal.modal.show(tabExcludedElements)
+  })
 
   // Ajout d'un événement au clic sur le bouton de like sur une carte média.
   document.addEventListener('likeCardClick', () => {
     // Si l'option de tri actuelle est la popularité on tri les carte de média.
     if (components.filtreSelector.value === 'popularity') {
+      const focusedElement = document.activeElement
+
       mediaCards = Globals.filter.sortMediaCards(mediaCards, Globals.filter.options.popularity.value)
       displayMediaCards(mediaCards)
       components.viewerModal.viewer.setPlaylist(mediaCards)
+
+      focusedElement.focus()
     }
-  })
-
-  // Ajout d'un événement au clic sur une carte média.
-  document.addEventListener('mediaCardClick', (e) => {
-    // Définition de l'écran du viewer comme étant la carte média cliquée.
-    components.viewerModal.viewer.setScreen(e.detail.mediaId)
-
-    // Affichage du viewer en mode modal.
-    components.viewerModal.modal.show()
   })
 }
 
 async function init () {
   const data = await getData() // Charge les données JSON.
+  document.querySelector('title').innerHTML = `Fisheye - ${data.profile.name}` // Définir le nom de l'onglet.
   const components = createComponents(await getData()) // Crée les composants de la page.
   const mediaCards = createMediaCards(data.media) // Création des cartes média.
   initEvents(components, mediaCards) // Initialise les événements pour les différents composants.
-  components.filtreSelector.value = 'date' // Initialise le filtre de tri par date.
 }
 
 init()

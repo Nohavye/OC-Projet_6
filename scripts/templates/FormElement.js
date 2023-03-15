@@ -35,7 +35,13 @@ class InputElement {
         _events: {
           input: () => {
             document.dispatchEvent(new CustomEvent('inputElementChange', {
-              detail: { id: this.id, validity: this.validity, value: this.value }
+              detail: { inputElement: this }
+            }))
+          },
+
+          focus: () => {
+            document.dispatchEvent(new CustomEvent('inputElementFocus', {
+              detail: { inputElement: this }
             }))
           }
         }
@@ -50,6 +56,14 @@ class InputElement {
    */
   addTo (parent) {
     parent.appendChild(this._template._)
+  }
+
+  /**
+   * Retourne l'élément d'entrée.
+   * @returns {HTMLElement}
+   */
+  get input () {
+    return this._template.input._
   }
 
   /**
@@ -141,10 +155,12 @@ class FormElement {
       _attributes: {
         class: `${name}-form`,
         style: `
+          outline: none;
           width: 100%;
           display: flex;
           flex-direction: column;
-        `
+        `,
+        tabindex: '0'
       },
       _events: {
         submit: (e) => {
@@ -167,6 +183,25 @@ class FormElement {
               detail: { answers }
             }))
           }
+        },
+
+        keydown: (e) => {
+          if (e.key === 'Escape') {
+            this.#sendCloseEvent()
+          }
+        }
+      },
+
+      accessibilityMessage: {
+        _: document.createElement('div'),
+        _attributes: {
+          'aria-live': 'assertive',
+          style: `
+            display: block;
+            color: lightgrey;
+            text-align: right;
+            height: 0;
+          `
         }
       },
 
@@ -186,11 +221,14 @@ class FormElement {
         }
       }
     }
-
     Template.build(this._template)
 
     this.#initContentArea()
     this.#startInputsListeners()
+  }
+
+  #sendCloseEvent () {
+    this._template._.dispatchEvent(new Event('closeEvent'))
   }
 
   #initContentArea () {
@@ -207,8 +245,22 @@ class FormElement {
   }
 
   #startInputsListeners () {
-    document.addEventListener('inputElementChange', () => {
+    const handleAccessibilityMessage = (e) => {
+      const inputElement = e.detail.inputElement
+      if (inputElement.validity) {
+        this._template.accessibilityMessage._.innerHTML = 'Saisie validée'
+      } else {
+        this._template.accessibilityMessage._.innerHTML = inputElement.input.getAttribute('title')
+      }
+    }
+
+    document.addEventListener('inputElementChange', (e) => {
       this._template.submitButton._.disabled = !this.#formValidity
+      handleAccessibilityMessage(e)
+    })
+
+    document.addEventListener('inputElementFocus', (e) => {
+      handleAccessibilityMessage(e)
     })
   }
 
@@ -231,9 +283,15 @@ class FormElement {
    * @param {string} buttonText - Le texte à afficher sur le bouton de soumission.
    */
   displaySucces (message, buttonText) {
-    this._template.contentArea._.innerHTML = `
-      <p class="succes-message">${message}</p>
-    `
+    this._template.accessibilityMessage._.innerHTML = ''
+    this._template.contentArea._.innerHTML = ''
+
+    const elementDiv = document.createElement('div')
+    elementDiv.setAttribute('aria-live', 'assertive')
+    elementDiv.setAttribute('class', 'succes-message')
+    this._template.contentArea._.appendChild(elementDiv)
+    window.setTimeout(() => { elementDiv.innerHTML = message }, 10)
+
     this._template.submitButton._.innerHTML = buttonText
   }
 

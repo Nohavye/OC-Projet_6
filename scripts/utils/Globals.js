@@ -1,19 +1,42 @@
 import { InputText, InputTextArea } from '../templates/TemplatesModule.js'
+import Template from '../templates/Template.js'
+
+function createSection (attributes) {
+  const section = {
+    _: document.createElement('section'),
+    _attributes: attributes
+  }
+  Template.build(section)
+  DOM.main.appendChild(section._)
+  return section._
+}
 
 const DOM = {
 
+  body: document.querySelector('body'),
   main: document.querySelector('main'),
 
-  profilesSection: document.querySelector('.profiles-section'),
+  get profilesSection () {
+    if (document.querySelector('.profiles-section')) {
+      return document.querySelector('.profiles-section')
+    } else {
+      return createSection({
+        class: 'profiles-section',
+        'aria-label': 'Photographes',
+        role: 'list'
+      })
+    }
+  },
 
   get browserSection () {
-    if (document.querySelector('.media-browser')) {
-      return document.querySelector('.media-browser')
+    if (document.querySelector('.browser-section')) {
+      return document.querySelector('.browser-section')
     } else {
-      const element = document.createElement('div')
-      element.classList.add('media-browser')
-      DOM.main.appendChild(element)
-      return element
+      return createSection({
+        class: 'browser-section',
+        'aria-label': 'Médias',
+        role: 'list'
+      })
     }
   }
 }

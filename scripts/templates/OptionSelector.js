@@ -9,7 +9,8 @@ class OptionSelector {
    */
   constructor (name, label, options) {
     this._name = name
-    this._isDeployed = true
+    this._isExpanded = true
+    this._keyboardMode = false
     this._value = null
 
     this._optionElements = []
@@ -42,7 +43,11 @@ class OptionSelector {
             overflow: hidden;
             margin-left: 60px;
             cursor: pointer;
-          `
+          `,
+          title: 'Selectionnez une options pour trier les oeuvres',
+          'aria-label': 'Selectionnez une options pour trier le oeuvres',
+          role: 'combobox',
+          tabindex: '0'
         }
       }
     }
@@ -51,6 +56,15 @@ class OptionSelector {
 
     this.#initOptions(options)
     this.#initSelector()
+
+    this._template.selector._.addEventListener('keyup', (e) => {
+      if (e.target === this._template.selector._) {
+        switch (e.key) {
+          case 'Enter':
+            this.#toggleSelector(true)
+        }
+      }
+    })
   }
 
   /**
@@ -62,6 +76,7 @@ class OptionSelector {
 
     for (const option of optionsArray) {
       const optionElement = document.createElement('option')
+      optionElement.setAttribute('role', 'option')
       optionElement.setAttribute('value', option.value)
       optionElement.setAttribute('style', `
         padding: 10px 0;
@@ -92,6 +107,23 @@ class OptionSelector {
     for (const optionElement of this._optionElements) {
       this._template.selector._.appendChild(optionElement)
     }
+
+    // Evènements à initialiser selon l'ordre des options
+    this._optionElements[0].addEventListener('keydown', (e) => {
+      if (e.target === this._optionElements[0]) {
+        if (this._keyboardMode && e.key === 'Tab' && e.shiftKey === true) {
+          this.#toggleSelector()
+        }
+      }
+    })
+
+    this._optionElements[this._optionElements.length - 1].addEventListener('keydown', (e) => {
+      if (e.target === this._optionElements[this._optionElements.length - 1]) {
+        if (this._keyboardMode && e.key === 'Tab' && e.shiftKey === false) {
+          this.#toggleSelector()
+        }
+      }
+    })
   }
 
   /**
@@ -99,14 +131,25 @@ class OptionSelector {
    */
   #initEvents () {
     for (const option of this._optionElements) {
+      const selectOptionEvent = new CustomEvent('select-option', {
+        detail: { value: option.value }
+      })
+
       option.addEventListener('click', () => {
-        this._template.selector._.dispatchEvent(new CustomEvent('click-option', {
-          detail: { value: option.value }
-        }))
+        this._template.selector._.dispatchEvent(selectOptionEvent)
+      })
+
+      option.addEventListener('keyup', (e) => {
+        if (e.target === option) {
+          switch (e.key) {
+            case 'Enter':
+              this._template.selector._.dispatchEvent(selectOptionEvent)
+          }
+        }
       })
     }
 
-    this._template.selector._.addEventListener('click-option', (e) => {
+    this._template.selector._.addEventListener('select-option', (e) => {
       if (this._value === e.detail.value) {
         this.#toggleSelector()
       } else {
@@ -125,17 +168,35 @@ class OptionSelector {
    * Change l'état de déploiement du sélecteur (déployé ou non déployé),
    * ajuste la hauteur du sélecteur et la flèche de sélection.
    */
-  #toggleSelector () {
-    if (this._isDeployed) {
-      this._isDeployed = false
+  #toggleSelector (keyboardMode = false) {
+    if (this._isExpanded) {
+      this._isExpanded = false
       this._template.selector._.style.height = `
         ${this._template._.clientHeight - 22}px
       `
       this._arrowElement.innerHTML = '\u23f7'
+      if (this._keyboardMode) this.#toggleKeyboardMode()
     } else {
-      this._isDeployed = true
+      this._isExpanded = true
       this._template.selector._.style.height = 'max-content'
       this._arrowElement.innerHTML = '\u23f6'
+      if (keyboardMode) this.#toggleKeyboardMode()
+    }
+  }
+
+  #toggleKeyboardMode () {
+    if (this._keyboardMode) {
+      this._keyboardMode = false
+      for (const element of this._optionElements) {
+        element.setAttribute('tabindex', '-1')
+      }
+      this._template.selector._.focus()
+    } else {
+      this._keyboardMode = true
+      for (const element of this._optionElements) {
+        element.setAttribute('tabindex', '0')
+      }
+      this._optionElements[0].focus()
     }
   }
 

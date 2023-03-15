@@ -10,11 +10,18 @@ class ProfileBanner {
    */
   constructor (entity) {
     this._template = {
-      _: document.createElement('div'),
-      _attributes: { class: 'profile-banner' },
+      _: document.createElement('header'),
+      _attributes: {
+        class: 'profile-banner',
+        'aria-label': 'Bannière de profil'
+      },
 
       informations: {
         _: document.createElement('div'),
+        _attributes: {
+          role: 'region',
+          'aria-label': `Informations sur ${entity.name}`
+        },
 
         title: {
           _: document.createElement('h2'),
@@ -37,18 +44,18 @@ class ProfileBanner {
       contactButton: {
         _: document.createElement('button'),
         _textContent: 'Contactez-moi',
-        _attributes: { class: 'contact-button' }
+        _attributes: {
+          class: 'contact-button',
+          title: `Cliquez pour envoyer un message à ${entity.name}`,
+          'aria-label': `Cliquez pour envoyer un message à ${entity.name}`
+        }
       },
 
-      photo: {
-        _: document.createElement('div'),
-
-        img: {
-          _: document.createElement('img'),
-          _attributes: {
-            src: entity.portrait.thumbnail,
-            alt: `photo de ${entity.name}`
-          }
+      img: {
+        _: document.createElement('img'),
+        _attributes: {
+          src: entity.portrait.thumbnail,
+          alt: `photo de ${entity.name}`
         }
       }
     }

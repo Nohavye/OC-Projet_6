@@ -15,77 +15,140 @@ class MediaCard {
 
     this._template = {
       _: document.createElement('div'),
-      _attributes: { class: 'mediaCard' },
-
-      thumbnail: {
-        _: document.createElement('div'),
-        _attributes: { style: 'cursor: pointer;' },
-        _events: {
-          click: () => {
-            document.dispatchEvent(new CustomEvent('mediaCardClick', {
-              detail: { mediaId: entity.id }
-            }))
-          }
-        }
+      _attributes: {
+        class: 'mediaCard',
+        role: 'listitem'
       },
 
-      legend: {
-        _: document.createElement('div'),
-        _attributes: { class: 'legend' },
+      thumbnail: {
+        _: document.createElement('figure'),
 
-        title: {
-          _: document.createElement('p'),
-          _textContent: `${entity.title}`,
-          _attributes: { class: 'title' }
-        },
-
-        likes: {
-          _: document.createElement('p'),
-          _textContent: `${this._likes} \u2661`,
+        media: {
           _attributes: {
-            class: 'likes',
+            class: 'media-link',
+            title: `Afficher la ${this.#describeMedia()}`,
+            alt: `Afficher la ${this.#describeMedia()}`,
+            role: 'button',
+            tabindex: '0',
             style: 'cursor: pointer;'
           },
+
           _events: {
             click: () => {
-              let addedValue = null
-
-              if (this._likes === entity.likes) {
-                addedValue = 1
-                this._likes += addedValue
-                this._template.legend.likes._.innerHTML = `${this._likes} \u2665`
-              } else {
-                addedValue = -1
-                this._likes += addedValue
-                this._template.legend.likes._.innerHTML = `${this._likes} \u2661`
-              }
-
-              document.dispatchEvent(new CustomEvent('likeCardClick', {
-                detail: { addedValue }
+              document.dispatchEvent(new CustomEvent('mediaCardSelect', {
+                detail: { mediaId: entity.id }
               }))
+            },
+
+            keydown: (e) => {
+              if (e.key === 'Enter') {
+                document.dispatchEvent(new CustomEvent('mediaCardSelect', {
+                  detail: { mediaId: entity.id }
+                }))
+              }
+            }
+          }
+        },
+
+        caption: {
+          _: document.createElement('figcaption'),
+          _attributes: { class: 'legend' },
+
+          title: {
+            _: document.createElement('p'),
+            _textContent: entity.title,
+            _attributes: { class: 'title' }
+          },
+
+          likes: {
+            _: document.createElement('p'),
+            _textContent: `${this._likes} \u2661`,
+            _attributes: {
+              class: 'likes',
+              title: this.#describeLikes(),
+              'aria-label': this.#describeLikes(),
+              role: 'button',
+              tabindex: '0',
+              style: 'cursor: pointer;'
+            },
+            _events: {
+              click: () => {
+                this.#clickToLike()
+              },
+
+              keyup: (e) => {
+                if (e.key === 'Enter') {
+                  this.#clickToLike()
+                }
+              }
             }
           }
         }
       }
     }
 
-    Template.build(this._template)
-
     switch (entity.fileType) {
       case 'image':
-        this._template.thumbnail._.innerHTML = `
-          <img src="${entity.file}">
-        `
+        this._template.thumbnail.media._ = document.createElement('img')
+        this._template.thumbnail.media._attributes.src = entity.file
         break
 
       case 'video':
-        this._template.thumbnail._.innerHTML = `
-          <video autoplay mute loop>
-              <source src="${entity.file}" type="video/mp4">
-          </video>
-        `
+        this._template.thumbnail.media._ = document.createElement('video')
+        this._template.thumbnail.media._attributes.autoplay = 'true'
+        this._template.thumbnail.media._attributes.mute = 'true'
+        this._template.thumbnail.media._attributes.loop = 'true'
+
+        this._template.thumbnail.media.source = {
+          _: document.createElement('source'),
+          _attributes: {
+            src: entity.file,
+            type: 'video/mp4'
+          }
+        }
         break
     }
+
+    Template.build(this._template)
+  }
+
+  #describeMedia () {
+    switch (this._entity.fileType) {
+      case 'image':
+        return `photo nommée '${this._entity.title}'`
+
+      case 'video':
+        return `vidéo nommée '${this._entity.title}'`
+    }
+  }
+
+  #describeLikes () {
+    if (this._likes === this._entity.likes) {
+      return `${this._likes} mention 'j'aime'. Attribuer une mention 'j'aime' à la ${this.#describeMedia()}`
+    } else {
+      return `${this._likes} mention 'j'aime'. Retirer votre mention 'j'aime' de la ${this.#describeMedia()}`
+    }
+  }
+
+  #clickToLike () {
+    let addedValue = null
+
+    if (this._likes === this._entity.likes) {
+      addedValue = 1
+      this._likes += addedValue
+      this._template.thumbnail.caption.likes._.innerHTML = `${this._likes} \u2665`
+    } else {
+      addedValue = -1
+      this._likes += addedValue
+      this._template.thumbnail.caption.likes._.innerHTML = `${this._likes} \u2661`
+    }
+
+    this._template.thumbnail.caption.likes._.setAttribute('title', this.#describeLikes())
+    this._template.thumbnail.caption.likes._.setAttribute('aria-label', this.#describeLikes())
+
+    document.dispatchEvent(new CustomEvent('likeCardClick', {
+      detail: { addedValue }
+    }))
   }
 
   /**

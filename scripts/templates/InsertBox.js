@@ -14,19 +14,27 @@ class InsertBox {
     this._likes = likes
 
     this._template = {
-      _: document.createElement('div'),
+      _: document.createElement('aside'),
       _attributes: {
         class: 'insertBox'
       },
 
       likes: {
         _: document.createElement('p'),
-        _textContent: `${this._likes} \u2665`
+        _textContent: `${this._likes} \u2665`,
+        _attributes: {
+          title: this.#describeLikes(),
+          'aria-label': this.#describeLikes()
+        }
       },
 
       price: {
         _: document.createElement('p'),
-        _textContent: `${price}€/jour`
+        _textContent: `${price}€/jour`,
+        _attributes: {
+          title: `Le tarif journalier de l'artiste est de ${price} euros`,
+          'aria-label': `Le tarif journalier de l'artiste est de ${price} euros`
+        }
       }
     }
 
@@ -39,7 +47,13 @@ class InsertBox {
     document.addEventListener('likeCardClick', (e) => {
       this._likes += e.detail.addedValue
       this._template.likes._.innerHTML = `${this._likes} \u2665`
+      this._template.likes._.setAttribute('title', this.#describeLikes())
+      this._template.likes._.setAttribute('aria-label', this.#describeLikes())
     })
+  }
+
+  #describeLikes () {
+    return `L'artiste totalise en tout ${this._likes} mentions 'j'aime'`
   }
 
   /**

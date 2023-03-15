@@ -27,6 +27,14 @@ class Template {
       if (pattern._events) {
         for (const key in pattern._events) {
           pattern._.addEventListener(key, pattern._events[key])
+
+          // pattern._.addEventListener(key, (e) => {
+          //   if (e.target === pattern._) {
+          //     (() => {
+          //       pattern._events[key](e)
+          //     })()
+          //   }
+          // })
         }
       }
 

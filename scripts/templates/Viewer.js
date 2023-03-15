@@ -14,18 +14,50 @@ class Viewer {
       _attributes: {
         class: 'viewer',
         style: `
+          outline: none;
           display: flex;
           justify-content: space-between;
           align-items: center;
           width: 90vw;
           height: 90vh;
-        `
+        `,
+        tabindex: '0'
+      },
+      _events: {
+        keydown: (e) => {
+          switch (e.key) {
+            case 'ArrowRight':
+              this.#next()
+              break
+            case 'ArrowLeft':
+              this.#last()
+              break
+            case 'Escape':
+              this.#sendCloseEvent()
+              break
+          }
+        }
+      },
+
+      accessibilityMessage: {
+        _: document.createElement('div'),
+        _attributes: {
+          'aria-live': 'assertive',
+          style: `
+            color: transparent;
+            position: absolute;
+            top: 0; left: 0;
+          `
+        }
       },
 
       leftButton: {
         _: document.createElement('img'),
         _attributes: {
           class: 'viewer__button',
+          role: 'button',
+          title: 'Revenir au média précédent',
+          alt: 'Revenir au média précédent',
           src: 'assets/icons/arrow_left_colortheme.svg',
           style: `
             cursor: pointer;
@@ -39,10 +71,11 @@ class Viewer {
       },
 
       screen: {
-        _: document.createElement('div'),
+        _: document.createElement('figure'),
         _attributes: {
           class: 'viewer__screen'
         },
+
         photo: {
           _: document.createElement('img'),
           _attributes: {
@@ -54,6 +87,7 @@ class Viewer {
             `
           }
         },
+
         video: {
           _: document.createElement('video'),
           _attributes: {
@@ -66,8 +100,9 @@ class Viewer {
             `
           }
         },
-        legend: {
-          _: document.createElement('p'),
+
+        caption: {
+          _: document.createElement('figcaption'),
           _attributes: {
             class: 'viewer__screen__legend',
             style: `
@@ -83,6 +118,9 @@ class Viewer {
         _: document.createElement('img'),
         _attributes: {
           class: 'viewer__button',
+          role: 'button',
+          title: 'Passer au média suivant',
+          alt: 'Passer au média suivant',
           src: 'assets/icons/arrow_right_colortheme.svg',
           style: `
             cursor: pointer;
@@ -96,6 +134,16 @@ class Viewer {
       }
     }
     Template.build(this._template)
+  }
+
+  #describeMedia () {
+    switch (this._mediaEntities[this._currentIndex].fileType) {
+      case 'image':
+        return `photo nommée '${this._mediaEntities[this._currentIndex].title}'`
+
+      case 'video':
+        return `vidéo nommée '${this._mediaEntities[this._currentIndex].title}'`
+    }
   }
 
   /**
@@ -124,17 +172,27 @@ class Viewer {
     switch (this._mediaEntities[this._currentIndex].fileType) {
       case 'image':
         this._template.screen.photo._.src = this._mediaEntities[this._currentIndex].file
+        this._template.screen.photo._.setAttribute('title', this.#describeMedia())
+        this._template.screen.photo._.setAttribute('alt', this.#describeMedia())
+
         this._template.screen.photo._.style.display = 'block'
         this._template.screen.video._.style.display = 'none'
         break
 
       case 'video':
         this._template.screen.video._.src = this._mediaEntities[this._currentIndex].file
+        this._template.screen.photo._.setAttribute('title', this.#describeMedia())
+        this._template.screen.photo._.setAttribute('aria-label', this.#describeMedia())
+
         this._template.screen.video._.style.display = 'block'
         this._template.screen.photo._.style.display = 'none'
         break
     }
-    this._template.screen.legend._.innerHTML = this._mediaEntities[this._currentIndex].title
+
+    this._template.screen.caption._.innerHTML = this._mediaEntities[this._currentIndex].title
+    window.setTimeout(() => {
+      this._template.accessibilityMessage._.innerHTML = this.#describeMedia()
+    }, 10)
   }
 
   #next () {
@@ -153,6 +211,10 @@ class Viewer {
       this._currentIndex = this._mediaEntities.length - 1
     }
     this.setScreen()
+  }
+
+  #sendCloseEvent () {
+    this._template._.dispatchEvent(new Event('closeEvent'))
   }
 
   /**
