@@ -2,7 +2,6 @@ import { MediaEntity, ProfileEntity } from './DataEntities.js'
 
 /**
  * Objet Format utilisé pour représenter différents formats de données.
- * @enum {Symbol}
  * @property {Symbol} Media - Symbol pour représenter le format média.
  * @property {Symbol} Profile - Symbol pour représenter le format profil.
  */

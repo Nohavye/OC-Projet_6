@@ -13,7 +13,10 @@ class InputElement {
    * @param {object} attributes - Les attributs de l'élément d'entrée.
    */
   constructor (tag, label, attributes) {
+    // Pattern pour la création du template.
     this._template = {
+
+      // Conteneur principal.
       _: document.createElement('div'),
       _attributes: {
         style: `
@@ -23,22 +26,29 @@ class InputElement {
         `
       },
 
+      // Etiquette associé à l'entrée configurée via les paramètres 'label' et 'attributes.id'.
       label: {
         _: document.createElement('label'),
         _textContent: label,
         _attributes: { for: attributes.id }
       },
 
+      // Entrée configurée via les paramètres 'tag' et 'attributes'.
       input: {
         _: document.createElement(tag),
         _attributes: attributes,
+
+        // Evènements générés par l'entrée.
         _events: {
+
+          // Evènement personnalisé lorsque l'entrée est saisie.
           input: () => {
             document.dispatchEvent(new CustomEvent('inputElementChange', {
               detail: { inputElement: this }
             }))
           },
 
+          // Evènement personnalisé lorsque l'entrée prend le focus.
           focus: () => {
             document.dispatchEvent(new CustomEvent('inputElementFocus', {
               detail: { inputElement: this }
@@ -148,54 +158,43 @@ class FormElement {
    * de formulaire sous la forme d'une classe héritée de la classe InputElement.
    */
   constructor (name, inputsElements) {
+    this._name = name
     this._inputElements = inputsElements
 
+    // Pattern pour la création du template.
     this._template = {
+
+      // Conteneur principal de type <form>.
       _: document.createElement('form'),
+
       _attributes: {
+
+        // Définition d'un sélècteur personnalisé.
         class: `${name}-form`,
+
+        // Style par défaut du formulaire.
+        // Peut être stylisé via CSS et le sélecteur personnalisé.
         style: `
-          outline: none;
           width: 100%;
           display: flex;
           flex-direction: column;
-        `,
-        tabindex: '0'
+        `
       },
+
+      // Evènements du formulaire.
       _events: {
-        submit: (e) => {
-          e.preventDefault()
-
-          if (this._hasBeenSubmitted) {
-            this.#initContentArea()
-          } else {
-            this._hasBeenSubmitted = true
-
-            const answers = new Map()
-
-            for (const input in this._inputElements) {
-              const id = this._inputElements[input].id
-              const value = this._inputElements[input].value
-              answers.set(id, value)
-            }
-
-            this._template._.dispatchEvent(new CustomEvent(`submit-${name}`, {
-              detail: { answers }
-            }))
-          }
-        },
-
-        keydown: (e) => {
-          if (e.key === 'Escape') {
-            this.#sendCloseEvent()
-          }
-        }
+        submit: this.#eventListeners.submit,
+        keydown: this.#eventListeners.keydown
       },
 
+      /*  Message d'accessibilité. Permet de suivre en temps réel le statut
+          de validation des entrées et du formulaire ainsi que d'envoyer
+          des messages live au lecteur d'écran. */
       accessibilityMessage: {
         _: document.createElement('div'),
         _attributes: {
           'aria-live': 'assertive',
+          role: 'status',
           style: `
             display: block;
             color: lightgrey;
@@ -205,10 +204,12 @@ class FormElement {
         }
       },
 
+      // Zone destiner à acceuillir les entrées de formulaire.
       contentArea: {
         _: document.createElement('div')
       },
 
+      // Boutton de soumission.
       submitButton: {
         _: document.createElement('button'),
         _textContent: 'Envoyer',
@@ -227,10 +228,8 @@ class FormElement {
     this.#startInputsListeners()
   }
 
-  #sendCloseEvent () {
-    this._template._.dispatchEvent(new Event('closeEvent'))
-  }
-
+  /*  Initialisation de la zone de contenu du formulaire.
+      ( Zone destinée à recevoir les entrées du formulaire ) */
   #initContentArea () {
     this._hasBeenSubmitted = false
     this._template.contentArea._.innerHTML = ''
@@ -241,29 +240,42 @@ class FormElement {
     }
 
     this._template.submitButton._.innerHTML = 'Envoyer'
-    this._template.submitButton._.disabled = !this.#formValidity
+    this._template.submitButton._.disabled = true
   }
 
+  /*  Initialisation des écouteur d'évènements lié à la validation du formulaire,
+      et à la gestion des messages pour l'accessibilité. */
   #startInputsListeners () {
-    const handleAccessibilityMessage = (e) => {
+    // Gestion des messages pour l'accessibilité.
+    const handleAccessibilityMessage = (e, formValidity) => {
       const inputElement = e.detail.inputElement
-      if (inputElement.validity) {
-        this._template.accessibilityMessage._.innerHTML = 'Saisie validée'
+
+      if (formValidity) {
+        this._template.accessibilityMessage._.innerHTML = 'Le formulaire validé'
       } else {
-        this._template.accessibilityMessage._.innerHTML = inputElement.input.getAttribute('title')
+        if (inputElement.validity) {
+          this._template.accessibilityMessage._.innerHTML = 'Saisie validée'
+        } else {
+          this._template.accessibilityMessage._.innerHTML = inputElement.input.getAttribute('title')
+        }
       }
     }
 
+    /*  Ecouter les changement d'entrées pour gérer l'activation du bouton
+        de soumission et actualiser le message d'accessibilité. */
     document.addEventListener('inputElementChange', (e) => {
-      this._template.submitButton._.disabled = !this.#formValidity
-      handleAccessibilityMessage(e)
+      const formValidity = this.#formValidity
+      handleAccessibilityMessage(e, formValidity)
+      this._template.submitButton._.disabled = !formValidity
     })
 
+    // Ecouter le focus sur les entrées pour actualiser le message d'accessibilité.
     document.addEventListener('inputElementFocus', (e) => {
-      handleAccessibilityMessage(e)
+      handleAccessibilityMessage(e, this.#formValidity)
     })
   }
 
+  // Tester la validité du formulaire.
   get #formValidity () {
     let validity = true
 
@@ -275,6 +287,43 @@ class FormElement {
     }
 
     return validity
+  }
+
+  // Fonctions liées au évènements du formulaire.
+  #eventListeners = {
+    submit: (e) => {
+      e.preventDefault()
+
+      if (this._hasBeenSubmitted) {
+        this.#initContentArea()
+      } else {
+        this._hasBeenSubmitted = true
+
+        const answers = new Map()
+
+        for (const input in this._inputElements) {
+          const id = this._inputElements[input].id
+          const value = this._inputElements[input].value
+          answers.set(id, value)
+        }
+
+        this._template._.dispatchEvent(new CustomEvent(`submit-${this._name}`, {
+          detail: { answers }
+        }))
+      }
+    },
+
+    keydown: (e) => {
+      if (e.key === 'Escape') {
+        this.#sendCloseEvent()
+      }
+    }
+  }
+
+  /*  Envoyer un évènement de fermeture à l'attention de modalWrapper.
+      ( Est appelé lors de l'appui sur la touche 'échap' ) */
+  #sendCloseEvent () {
+    this._template._.dispatchEvent(new Event('closeEvent'))
   }
 
   /**

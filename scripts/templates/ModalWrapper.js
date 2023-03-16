@@ -104,6 +104,7 @@ class ModalWrapper {
       this._template.box.header._attributes.style += 'position: absolute; top: 35px; right: 35px;'
     } else {
       this._template.box.header.title._.innerHTML = title
+      this._template._attributes['aria-label'] = title
     }
 
     // Création de classes
@@ -155,7 +156,17 @@ class ModalWrapper {
     }
 
     this._template._.style.display = 'flex'
-    this._template.box.contentBox._.childNodes[0].focus()
+
+    // this._template.box.contentBox._.childNodes[0].focus()
+    this.#getFirstFocusableElement(this._template.box.contentBox._).focus()
+  }
+
+  #getFirstFocusableElement (parent) {
+    const firstFocusableElement = parent.querySelectorAll(
+      'button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )[0]
+    console.log(firstFocusableElement)
+    return firstFocusableElement
   }
 
   /**
