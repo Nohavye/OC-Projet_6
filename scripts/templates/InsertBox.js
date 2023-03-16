@@ -13,7 +13,10 @@ class InsertBox {
   constructor (likes, price) {
     this._likes = likes
 
+    // Pattern pour la création du template.
     this._template = {
+
+      // Conteneur principal.
       _: document.createElement('aside'),
       _attributes: {
         class: 'insertBox'
