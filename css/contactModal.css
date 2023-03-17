@@ -49,6 +49,11 @@
   cursor: pointer;
 }
 
+.contact-form .contact-button:hover {
+  color: black;
+  background-color: #d3573c;
+}
+
 .contact-form button:disabled {
   opacity: 0.5;
 }
