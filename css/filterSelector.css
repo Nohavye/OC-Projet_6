@@ -1,0 +1,18 @@
+.filter-option-selector {
+  width: max-content;
+  margin: 20px 100px;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.filter-option-selector label {
+  color: black;
+}
+
+.filter-selector {
+  background-color: #901C1C;
+  width: 150px;
+  border-radius: 5px;
+  padding: 10px 30px;
+}

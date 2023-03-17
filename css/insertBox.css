@@ -1,0 +1,15 @@
+.insertBox {
+  position: fixed;
+  bottom: 0;
+  right: 50px;
+  background-color: #DB8876;
+  padding: 20px 50px;
+  width: max-content;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 70px;
+  font-size: 24px;
+  font-weight: 500;
+  border-radius: 10px 10px 0 0;
+}

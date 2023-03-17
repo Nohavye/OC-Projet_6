@@ -1,0 +1,66 @@
+.contact-modal {
+  border-radius: 5px;
+  background-color: #DB8876;
+  width: 40%;
+}
+
+.contact-form label {
+  color: #312E2E;
+  font-size: 32px;
+}
+
+.contact-form input {
+  height: 68px;
+  border: none;
+  border-radius: 5px;
+  font-size: 28px;
+  outline: none;
+}
+
+.contact-form input:invalid {
+  border: 3px solid red;
+  color: red;
+}
+
+.contact-form textarea {
+  resize: none;
+  height: 175px;
+  border: none;
+  border-radius: 5px;
+  font-size: 24px;
+  outline: none;
+}
+
+.contact-form textarea:invalid {
+  border: 3px solid red;
+  color: red;
+}
+
+.contact-form .contact-button {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  padding: 11px;
+  width: 170px;
+  height: 70px;
+  border: none;
+  background-color: #901C1C;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.contact-form button:disabled {
+  opacity: 0.5;
+}
+
+.contact-form .succes-message {
+  color: #312E2E;
+  font-size: 36px;
+  text-align: center;
+  width: 80%;
+  margin: auto;
+  margin-top: 80px;
+  margin-bottom: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
