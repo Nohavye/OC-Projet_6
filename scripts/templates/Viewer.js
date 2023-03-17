@@ -6,10 +6,15 @@ import Template from './Template.js'
  */
 class Viewer {
   constructor () {
+    // Tableau des médias à parcourir sous la forme d'un objet 'mediaEntity'.
     this._mediaEntities = []
+    // Index courant du viewer.
     this._currentIndex = null
 
+    // Pattern pour la création du template.
     this._template = {
+
+      // Conteneur principal.
       _: document.createElement('div'),
       _attributes: {
         class: 'viewer',
@@ -23,6 +28,8 @@ class Viewer {
         `,
         tabindex: '0'
       },
+
+      // Evènements pour la navigation au clavier.
       _events: {
         keydown: (e) => {
           switch (e.key) {
@@ -39,6 +46,8 @@ class Viewer {
         }
       },
 
+      /*  Message d'accessibilité pour l'envoi
+          de messages live au lecteur d'écran. */
       accessibilityMessage: {
         _: document.createElement('div'),
         _attributes: {
@@ -51,6 +60,7 @@ class Viewer {
         }
       },
 
+      // Boutton pour passer au média suivant.
       leftButton: {
         _: document.createElement('img'),
         _attributes: {
@@ -64,12 +74,11 @@ class Viewer {
           `
         },
         _events: {
-          click: () => {
-            this.#last()
-          }
+          click: this.#last()
         }
       },
 
+      // Zone d'affichage contenant le média et le titre.
       screen: {
         _: document.createElement('figure'),
         _attributes: {
@@ -114,6 +123,7 @@ class Viewer {
         }
       },
 
+      // Boutton pour passer au média précédent.
       rightButton: {
         _: document.createElement('img'),
         _attributes: {
@@ -127,15 +137,14 @@ class Viewer {
           `
         },
         _events: {
-          click: () => {
-            this.#next()
-          }
+          click: this.#next()
         }
       }
     }
     Template.build(this._template)
   }
 
+  // Accessibilité: Message destiné au lecteur d'écran.
   #describeMedia () {
     switch (this._mediaEntities[this._currentIndex].fileType) {
       case 'image':
@@ -147,7 +156,7 @@ class Viewer {
   }
 
   /**
-   * Définit la liste de lecture pour le visualiseur.
+   * Définit la liste de lecture.
    * @param {Array} mediaCards - Un tableau d'objets de carte de média.
    */
   setPlaylist (mediaCards) {
@@ -169,6 +178,8 @@ class Viewer {
       }
     }
 
+    // Détermine la et initialise la zone de média à afficher selon le type de média.
+    // ( photo / vidéo )
     switch (this._mediaEntities[this._currentIndex].fileType) {
       case 'image':
         this._template.screen.photo._.src = this._mediaEntities[this._currentIndex].file
@@ -189,12 +200,14 @@ class Viewer {
         break
     }
 
+    // Initialise le message live.
     this._template.screen.caption._.innerHTML = this._mediaEntities[this._currentIndex].title
     window.setTimeout(() => {
       this._template.accessibilityMessage._.innerHTML = this.#describeMedia()
     }, 10)
   }
 
+  // Passer au média suivant.
   #next () {
     if (this._currentIndex < this._mediaEntities.length - 1) {
       this._currentIndex += 1
@@ -204,6 +217,7 @@ class Viewer {
     this.setScreen()
   }
 
+  // Passer au média précédent.
   #last () {
     if (this._currentIndex !== 0) {
       this._currentIndex -= 1
@@ -213,6 +227,7 @@ class Viewer {
     this.setScreen()
   }
 
+  // Envoyer un évènement 'closeEvent' à l'attention de ModalWrapper.
   #sendCloseEvent () {
     this._template._.dispatchEvent(new Event('closeEvent'))
   }

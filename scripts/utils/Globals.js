@@ -1,6 +1,8 @@
+// Import des modules nécessaires.
 import { InputText, InputTextArea } from '../templates/TemplatesModule.js'
 import Template from '../templates/Template.js'
 
+// Créer une section dans la balise <main> avec les attributs spécifiés.
 function createSection (attributes) {
   const section = {
     _: document.createElement('section'),
@@ -11,6 +13,7 @@ function createSection (attributes) {
   return section._
 }
 
+// Elements du DOM nécessaires au scripts de page.
 const DOM = {
 
   body: document.querySelector('body'),
@@ -41,14 +44,17 @@ const DOM = {
   }
 }
 
+// Constantes nécessaires au filtre.
 const filter = {
 
+  // Options pour le sélecteur.
   options: {
     popularity: { name: 'Popularité', value: 'popularity' },
     date: { name: 'Date', value: 'date' },
     title: { name: 'Titre', value: 'title' }
   },
 
+  // Fonction pour le tri des cartes.
   sortMediaCards: (mediaCards, option) => {
     switch (option) {
       case filter.options.popularity.value:
@@ -67,8 +73,10 @@ const filter = {
   }
 }
 
+// Constantes nécessaires au formulaire.
 const contactForm = {
 
+  // Implémentation des entrées du formulaire.
   inputs: {
 
     firstName: new InputText(
@@ -100,6 +108,7 @@ const contactForm = {
     )
   },
 
+  // Message de succès après validation du formulaire.
   succesMessage: (firstName, email) => {
     return `
       Merci ${firstName} pour votre message, il a bien été transmis.
@@ -109,6 +118,7 @@ const contactForm = {
   }
 }
 
+// Fonction pour le total des mention 'j'aime'.
 function addLikes (mediaEntityList) {
   let sumOfLikes = 0
   for (const entity of mediaEntityList) {

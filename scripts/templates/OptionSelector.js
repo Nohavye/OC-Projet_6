@@ -9,17 +9,24 @@ class OptionSelector {
    */
   constructor (name, label, options) {
     this._name = name
-    this._isExpanded = true
-    this._keyboardMode = false
     this._value = null
+    this._isExpanded = true
+    this._tabMode = false
 
     this._optionElements = []
     this._arrowElement = document.createElement('p')
 
+    // Pattern pour la création du template.
     this._template = {
+
+      // Conteneur principal.
       _: document.createElement('div'),
       _attributes: {
+
+        // Définition d'un sélècteur personnalisé.
+        // Peut être stylisé via CSS et le sélecteur personnalisé.
         class: `${this._name}-option-selector`,
+
         style: 'display: flex;'
       },
 
@@ -56,15 +63,6 @@ class OptionSelector {
 
     this.#initOptions(options)
     this.#initSelector()
-
-    this._template.selector._.addEventListener('keyup', (e) => {
-      if (e.target === this._template.selector._) {
-        switch (e.key) {
-          case 'Enter':
-            this.#toggleSelector(true)
-        }
-      }
-    })
   }
 
   /**
@@ -72,6 +70,8 @@ class OptionSelector {
    * @param {Object} options - Les options à afficher dans le sélecteur.
    */
   #initOptions (options) {
+    /*  Ici, on construit les éléments du Dom stockés dans un
+        tableau qui vont constituer les options du sélecteur */
     const optionsArray = Object.values(options)
 
     for (const option of optionsArray) {
@@ -108,10 +108,11 @@ class OptionSelector {
       this._template.selector._.appendChild(optionElement)
     }
 
-    // Evènements à initialiser selon l'ordre des options
+    /*  Evènements à actualiser selon l'ordre des options. Défini le comportement
+        du sélecteur lors de la perte du focus pour la navigation au clavier. */
     this._optionElements[0].addEventListener('keydown', (e) => {
       if (e.target === this._optionElements[0]) {
-        if (this._keyboardMode && e.key === 'Tab' && e.shiftKey === true) {
+        if (this._tabMode && e.key === 'Tab' && e.shiftKey === true) {
           this.#toggleSelector()
         }
       }
@@ -119,7 +120,7 @@ class OptionSelector {
 
     this._optionElements[this._optionElements.length - 1].addEventListener('keydown', (e) => {
       if (e.target === this._optionElements[this._optionElements.length - 1]) {
-        if (this._keyboardMode && e.key === 'Tab' && e.shiftKey === false) {
+        if (this._tabMode && e.key === 'Tab' && e.shiftKey === false) {
           this.#toggleSelector()
         }
       }
@@ -127,14 +128,19 @@ class OptionSelector {
   }
 
   /**
-   * Initialise les événements pour chaque option du sélecteur et pour le sélecteur lui-même.
+   * Initialise les événements pour chaque options du sélecteur et pour le sélecteur lui-même.
    */
   #initEvents () {
+    // Options du sélecteur.
     for (const option of this._optionElements) {
+      /*  Evènement personnalisé représentant la sélection d'une option.
+          Communique la valeur de l'option sélectionnée. */
       const selectOptionEvent = new CustomEvent('select-option', {
         detail: { value: option.value }
       })
 
+      /*  Diffusion de l'évènement personnalisé 'select-option' au clique
+          et sur pression de la touche 'Enter' sur une option. */
       option.addEventListener('click', () => {
         this._template.selector._.dispatchEvent(selectOptionEvent)
       })
@@ -149,6 +155,8 @@ class OptionSelector {
       })
     }
 
+    /*  Ecouter l'évènement 'select-option' et définir le comportement du
+        sélecteur en fonction de l'option choisie. */
     this._template.selector._.addEventListener('select-option', (e) => {
       if (this._value === e.detail.value) {
         this.#toggleSelector()
@@ -157,42 +165,57 @@ class OptionSelector {
         this.#initSelector()
         this.#toggleSelector()
 
+        /*  Diffusion de l'évènement personnalisé `${this._name}-option-change`.
+            Communique la nouvelle valeur de l'option. */
         this._template._.dispatchEvent(new CustomEvent(`${this._name}-option-change`, {
           detail: { option: e.detail.value }
         }))
       }
     })
+
+    // Permet d'ouvrir le sélecteur par l'action de la touche 'Enter'.
+    this._template.selector._.addEventListener('keyup', (e) => {
+      if (e.target === this._template.selector._) {
+        switch (e.key) {
+          case 'Enter':
+            this.#toggleSelector(true)
+        }
+      }
+    })
   }
 
   /**
-   * Change l'état de déploiement du sélecteur (déployé ou non déployé),
-   * ajuste la hauteur du sélecteur et la flèche de sélection.
+   * Change l'état de déploiement du sélecteur ( déployé ou non déployé ).
    */
-  #toggleSelector (keyboardMode = false) {
+  #toggleSelector (tabMode = false) {
     if (this._isExpanded) {
       this._isExpanded = false
       this._template.selector._.style.height = `
         ${this._template._.clientHeight - 22}px
       `
       this._arrowElement.innerHTML = '\u23f7'
-      if (this._keyboardMode) this.#toggleKeyboardMode()
+      if (this._tabMode) this.#toggleTabMode()
     } else {
       this._isExpanded = true
       this._template.selector._.style.height = 'max-content'
       this._arrowElement.innerHTML = '\u23f6'
-      if (keyboardMode) this.#toggleKeyboardMode()
+      if (tabMode) this.#toggleTabMode()
     }
   }
 
-  #toggleKeyboardMode () {
-    if (this._keyboardMode) {
-      this._keyboardMode = false
+  /**
+   * Bascule l'état de la navigation dans les options.
+   * ( souris / clavier )
+   */
+  #toggleTabMode () {
+    if (this._tabMode) {
+      this._tabMode = false
       for (const element of this._optionElements) {
         element.setAttribute('tabindex', '-1')
       }
       this._template.selector._.focus()
     } else {
-      this._keyboardMode = true
+      this._tabMode = true
       for (const element of this._optionElements) {
         element.setAttribute('tabindex', '0')
       }

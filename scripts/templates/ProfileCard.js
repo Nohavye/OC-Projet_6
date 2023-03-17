@@ -10,7 +10,10 @@ class ProfileCard {
    * @param {object} entity - Une entité de profil.
    */
   constructor (entity) {
+    // Pattern pour la création du template.
     this._template = {
+
+      // Conteneur principal.
       _: document.createElement('div'),
       _attributes: {
         class: 'profile-card',

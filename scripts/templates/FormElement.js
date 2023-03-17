@@ -296,6 +296,7 @@ class FormElement {
 
       if (this._hasBeenSubmitted) {
         this.#initContentArea()
+        Object.values(this._inputElements)[0].input.focus()
       } else {
         this._hasBeenSubmitted = true
 

@@ -9,7 +9,10 @@ class ProfileBanner {
    * @param {ProfileEntity} entity - Une entité de profil.
    */
   constructor (entity) {
+    // Pattern pour la création du template.
     this._template = {
+
+      // Conteneur principal.
       _: document.createElement('header'),
       _attributes: {
         class: 'profile-banner',

@@ -23,6 +23,7 @@ function createProfileCard (profileEntities) {
   return profileCards
 }
 
+// Afficher les cartes de profil.
 function displayProfileCards (profileCards) {
   Globals.DOM.browserSection.innerHTML = ''
   profileCards.forEach(profileCard => {
