@@ -13,7 +13,7 @@ function createSection (attributes) {
   return section._
 }
 
-// Elements du DOM nécessaires au scripts de page.
+// Elements du DOM nécessaires aux scripts de page.
 const DOM = {
 
   body: document.querySelector('body'),
