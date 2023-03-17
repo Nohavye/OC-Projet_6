@@ -152,7 +152,7 @@ function initEvents (components, mediaCards) {
 async function init () {
   const data = await getData() // Charge les données JSON.
   document.querySelector('title').innerHTML = `Fisheye - ${data.profile.name}` // Définir le nom de l'onglet.
-  const components = createComponents(await getData()) // Crée les composants de la page.
+  const components = createComponents(data) // Crée les composants de la page.
   const mediaCards = createMediaCards(data.media) // Création des cartes média.
   initEvents(components, mediaCards) // Initialise les événements pour les différents composants.
 }

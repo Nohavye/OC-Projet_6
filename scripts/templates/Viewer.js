@@ -74,7 +74,9 @@ class Viewer {
           `
         },
         _events: {
-          click: this.#last()
+          click: () => {
+            this.#last()
+          }
         }
       },
 
@@ -137,7 +139,9 @@ class Viewer {
           `
         },
         _events: {
-          click: this.#next()
+          click: () => {
+            this.#next()
+          }
         }
       }
     }
