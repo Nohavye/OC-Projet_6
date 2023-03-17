@@ -1,4 +1,4 @@
-# Base de code du projet P6 - Parcours Front-end
+# Projet P6 - Parcours Front-end
 
 ## Démarrer le projet
 
