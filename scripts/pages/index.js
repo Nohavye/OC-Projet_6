@@ -25,7 +25,7 @@ function createProfileCard (profileEntities) {
 
 // Afficher les cartes de profil.
 function displayProfileCards (profileCards) {
-  Globals.DOM.browserSection.innerHTML = ''
+  Globals.DOM.profilesSection.innerHTML = ''
   profileCards.forEach(profileCard => {
     profileCard.addTo(Globals.DOM.profilesSection)
   })
