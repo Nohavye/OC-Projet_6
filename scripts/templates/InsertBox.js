@@ -44,7 +44,7 @@ class InsertBox {
     Template.build(this._template)
 
     /**
-     * Écouteur d'événements pour l'événement 'likeCardClick',
+     * Écouteur d'événement pour l'événement 'likeCardClick',
      * qui met à jour le nombre de likes affichés.
      */
     document.addEventListener('likeCardClick', (e) => {

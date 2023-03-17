@@ -151,10 +151,9 @@ class MediaCard {
   // Fonctions liées au évènements de la carte.
   #eventListeners = {
 
+    // Diffusion d'un évènement 'mediaCardSelect' au clique
+    // et sur pression de la touche 'Enter'.
     media: {
-
-      // Diffusion d'un évènement 'mediaCardSelect' au clique
-      // et sur pression de la touche 'Enter'.
       click: () => {
         document.dispatchEvent(new CustomEvent('mediaCardSelect', {
           detail: { mediaId: this._entity.id }
@@ -170,10 +169,9 @@ class MediaCard {
       }
     },
 
+    // Gestion de l'intéractivité sur la mention 'j'aime'
+    // au clique et sur pression de la touche 'Enter'.
     likes: {
-
-      // Gestion de l'intéractivité sur la mention 'j'aime'
-      // au clique et sur pression de la touche 'Enter'.
       click: () => {
         this.#handleClickToLike()
       },

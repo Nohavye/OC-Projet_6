@@ -12,9 +12,15 @@ class ModalWrapper {
    * @param {string} [title] - Le titre de la fenêtre modale.
    */
   constructor (name, title) {
-    this._tabExcludedElements = null
+    /*  Permet de stocker les élements de la pages qui ne doivent
+        plus recevoir le focus tant que la modale est affichée. */
+    this._focusExcludedElements = null
 
+    // Pattern pour la création du template.
     this._template = {
+
+      // Conteneur principal.
+      // Arrière plan de la modale.
       _: document.createElement('div'),
       _attributes: {
         role: 'dialog',
@@ -30,9 +36,11 @@ class ModalWrapper {
         `
       },
 
+      // Boite de dialogue.
       box: {
         _: document.createElement('div'),
         _attributes: {
+          class: `${name}-modal`,
 
           style: `
             position: relative;
@@ -43,6 +51,8 @@ class ModalWrapper {
           `
         },
 
+        /*  En-tête contenant le titre et le bouton
+            de fermeture de la modale. */
         header: {
           _: document.createElement('header'),
           _attributes: {
@@ -79,26 +89,20 @@ class ModalWrapper {
               style: 'cursor: pointer;'
             },
             _events: {
-              click: () => {
-                this.hide()
-              },
-
-              keyup: (e) => {
-                if (e.key === 'Enter') {
-                  this.hide()
-                }
-              }
+              click: this.#eventListeners.closeButton.click,
+              keyup: this.#eventListeners.closeButton.keyup
             }
           }
         },
 
-        contentBox: {
+        // Zone destiner à acceuillir le contenu de la modale.
+        contentArea: {
           _: document.createElement('div')
         }
       }
     }
 
-    // Init Titre
+    // Modification de l'en-tête en fonction de la présence d'un titre ou non.
     if (typeof (title) === 'undefined') {
       this._template.box.header.title._attributes.style += 'display: none;'
       this._template.box.header._attributes.style += 'position: absolute; top: 35px; right: 35px;'
@@ -107,11 +111,34 @@ class ModalWrapper {
       this._template._attributes['aria-label'] = title
     }
 
-    // Création de classes
-    this._template.box._attributes.class = `${name}-modal`
-
-    // Construire Template
     Template.build(this._template)
+  }
+
+  // Retourne le premier élément focusable du parent spécifié.
+  #getFirstFocusableElement (parent) {
+    const firstFocusableElement = parent.querySelectorAll(
+      'button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )[0]
+    console.log(firstFocusableElement)
+    return firstFocusableElement
+  }
+
+  // Fonctions liées au évènements de la modale.
+  #eventListeners = {
+
+    // Fermeture de la modale au clique et sur pression
+    // de la touche 'Enter' sur le bouton de fermeture.
+    closeButton: {
+      click: () => {
+        this.hide()
+      },
+
+      keyup: (e) => {
+        if (e.key === 'Enter') {
+          this.hide()
+        }
+      }
+    }
   }
 
   /**
@@ -135,51 +162,55 @@ class ModalWrapper {
    * @param {HTMLElement} element - L'élément à ajouter au contenu de la fenêtre modale.
    */
   addContent (element) {
+    /*  Ecouter l'évènement 'closeEvent' sur le contenu ajouté pour
+        une fermeture de la modale sur appui de la touche 'Echap'. */
     element.addEventListener('closeEvent', () => {
       this.hide()
     })
-    this._template.box.contentBox._.appendChild(element)
+    this._template.box.contentArea._.appendChild(element)
   }
 
   /**
    * Affiche la fenêtre modale.
    */
-  show (tabExcludedElements) {
+  show (focusExcludedElements) {
+    // Mémoriser l'élément qui détient le focus sur la page courante.
     this._focusedElement = document.activeElement
 
-    if (typeof (tabExcludedElements) !== 'undefined') {
-      this._tabExcludedElements = tabExcludedElements
+    // Si des éléments à exclure du focus sont définis.
+    if (typeof (focusExcludedElements) !== 'undefined') {
+      // Mémoriser ses éléments.
+      this._focusExcludedElements = focusExcludedElements
 
-      this._tabExcludedElements.forEach((element) => {
+      // Rendre ses éléments non focusables.
+      this._focusExcludedElements.forEach((element) => {
         element.setAttribute('tabindex', '-1')
       })
     }
 
+    // Afficher la modale.
     this._template._.style.display = 'flex'
 
-    // this._template.box.contentBox._.childNodes[0].focus()
-    this.#getFirstFocusableElement(this._template.box.contentBox._).focus()
-  }
-
-  #getFirstFocusableElement (parent) {
-    const firstFocusableElement = parent.querySelectorAll(
-      'button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    )[0]
-    console.log(firstFocusableElement)
-    return firstFocusableElement
+    // Donner le focus au premier élément focusable du contenu de la modale.
+    this.#getFirstFocusableElement(this._template.box.contentArea._).focus()
   }
 
   /**
    * Masque la fenêtre modale.
    */
   hide () {
-    if (this._tabExcludedElements !== null) {
-      this._tabExcludedElements.forEach((element) => {
+    // Si des éléments non focusables ont été définis.
+    if (this._focusExcludedElements !== null) {
+      // Rendre ses éléments de nouveau focusables.
+      this._focusExcludedElements.forEach((element) => {
         element.setAttribute('tabindex', '0')
       })
     }
 
+    // Cacher la modale.
     this._template._.style.display = 'none'
+
+    // Restituer le focus à l'élément qui le détennait avant ouverture de la modale.
     this._focusedElement.focus()
   }
 
