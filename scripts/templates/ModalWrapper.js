@@ -119,7 +119,6 @@ class ModalWrapper {
     const firstFocusableElement = parent.querySelectorAll(
       'button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])'
     )[0]
-    console.log(firstFocusableElement)
     return firstFocusableElement
   }
 

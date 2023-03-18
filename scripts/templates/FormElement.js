@@ -251,7 +251,7 @@ class FormElement {
       const inputElement = e.detail.inputElement
 
       if (formValidity) {
-        this._template.accessibilityMessage._.innerHTML = 'Le formulaire validé'
+        this._template.accessibilityMessage._.innerHTML = 'Le formulaire est validé'
       } else {
         if (inputElement.validity) {
           this._template.accessibilityMessage._.innerHTML = 'Saisie validée'

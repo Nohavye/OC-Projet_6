@@ -27,7 +27,11 @@ class OptionSelector {
         // Peut être stylisé via CSS et le sélecteur personnalisé.
         class: `${this._name}-option-selector`,
 
-        style: 'display: flex;'
+        style: 'display: flex;',
+
+        title: 'Selectionnez une options',
+        'aria-label': 'Selectionnez une options',
+        role: 'listbox'
       },
 
       label: {
@@ -51,10 +55,19 @@ class OptionSelector {
             margin-left: 60px;
             cursor: pointer;
           `,
-          title: 'Selectionnez une options pour trier les oeuvres',
-          'aria-label': 'Selectionnez une options pour trier le oeuvres',
-          role: 'combobox',
           tabindex: '0'
+        }
+      },
+
+      /*  Message d'accessibilité pour l'envoi
+          de messages live au lecteur d'écran. */
+      accessibilityMessage: {
+        _: document.createElement('div'),
+        _attributes: {
+          'aria-live': 'assertive',
+          style: `
+            diplay: none;
+          `
         }
       }
     }
@@ -76,7 +89,6 @@ class OptionSelector {
 
     for (const option of optionsArray) {
       const optionElement = document.createElement('option')
-      optionElement.setAttribute('role', 'option')
       optionElement.setAttribute('value', option.value)
       optionElement.setAttribute('style', `
         padding: 10px 0;
@@ -96,6 +108,7 @@ class OptionSelector {
    */
   #initSelector () {
     this._value = this._optionElements[0].value
+    this._template.accessibilityMessage._.innerHTML = `Vous venez de sélèctionner l'option ${this._optionElements[0].textContent}`
     this._optionElements[0].insertAdjacentElement('beforeend', this._arrowElement)
     this._optionElements[0].style.borderTop = '0'
 
@@ -137,6 +150,11 @@ class OptionSelector {
           Communique la valeur de l'option sélectionnée. */
       const selectOptionEvent = new CustomEvent('select-option', {
         detail: { value: option.value }
+      })
+
+      //  Message live pour l'option indiquer l'option qui détient le focus.
+      option.addEventListener('focus', () => {
+        this._template.accessibilityMessage._.innerHTML = option.textContent
       })
 
       /*  Diffusion de l'évènement personnalisé 'select-option' au clique
