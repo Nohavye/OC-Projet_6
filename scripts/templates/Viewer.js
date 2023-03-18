@@ -78,6 +78,7 @@ class Viewer {
           _: document.createElement('img'),
           _attributes: {
             class: 'viewer__screen__media',
+            alt: 'photo container',
             style: `
               display: none;
               border-radius: 10px;
