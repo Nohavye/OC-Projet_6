@@ -40,6 +40,7 @@ class ModalWrapper {
       box: {
         _: document.createElement('div'),
         _attributes: {
+          id: `${name}-modal`,
           class: `${name}-modal`,
 
           style: `

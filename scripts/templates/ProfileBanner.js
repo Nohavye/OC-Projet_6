@@ -50,7 +50,8 @@ class ProfileBanner {
         _attributes: {
           class: 'contact-button',
           title: `Cliquez pour envoyer un message à ${entity.name}`,
-          'aria-label': `Cliquez pour envoyer un message à ${entity.name}`
+          'aria-label': `Cliquez pour envoyer un message à ${entity.name}`,
+          'aria-hashpopup': 'contact-modal'
         }
       },
 

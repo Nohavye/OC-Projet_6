@@ -31,6 +31,7 @@ class OptionSelector {
 
         title: 'Selectionnez une options',
         'aria-label': 'Selectionnez une options',
+        'aria-expanded': 'false',
         role: 'listbox'
       },
 
@@ -90,6 +91,7 @@ class OptionSelector {
     for (const option of optionsArray) {
       const optionElement = document.createElement('option')
       optionElement.setAttribute('value', option.value)
+      optionElement.setAttribute('id', option.value)
       optionElement.setAttribute('style', `
         padding: 10px 0;
         display: flex;
@@ -108,14 +110,33 @@ class OptionSelector {
    */
   #initSelector () {
     this._value = this._optionElements[0].value
-    this._template.accessibilityMessage._.innerHTML = `Vous venez de sélèctionner l'option ${this._optionElements[0].textContent}`
+
+    // Première option
+
+    // Accessibility
+    this._optionElements[0].setAttribute('aria-selected', true)
+
+    // Style
     this._optionElements[0].insertAdjacentElement('beforeend', this._arrowElement)
     this._optionElements[0].style.borderTop = '0'
 
+    // Autres options
+
     for (let i = 1; i < this._optionElements.length; i++) {
+      // Accessibilité
+      this._optionElements[i].setAttribute('aria-selected', false)
+
+      // Style
       this._optionElements[i].style.borderTop = '2px solid white'
     }
 
+    // Selecteur
+
+    // Accessibilité
+    this._template._.setAttribute('aria-activedescendant', this._value)
+    this._template.accessibilityMessage._.innerHTML = `Vous venez de sélèctionner l'option ${this._optionElements[0].textContent}`
+
+    // Actualisation selecteur
     this._template.selector._.innerHTML = ''
     for (const optionElement of this._optionElements) {
       this._template.selector._.appendChild(optionElement)
@@ -219,6 +240,7 @@ class OptionSelector {
       this._arrowElement.innerHTML = '\u23f6'
       if (tabMode) this.#toggleTabMode()
     }
+    this._template._.setAttribute('aria-expanded', this._isExpanded)
   }
 
   /**

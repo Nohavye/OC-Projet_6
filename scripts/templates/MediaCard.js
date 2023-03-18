@@ -34,7 +34,8 @@ class MediaCard {
             class: 'media-link',
             title: `Afficher la ${this.#describeMedia()}`,
             alt: `Afficher la ${this.#describeMedia()}`,
-            role: 'button',
+            'aria-hashpopup': 'viewer-modal',
+            role: 'link',
             tabindex: '0',
             style: 'cursor: pointer;'
           },
@@ -64,7 +65,8 @@ class MediaCard {
               class: 'likes',
               title: this.#describeLikes(),
               'aria-label': this.#describeLikes(),
-              role: 'button',
+              role: 'checkbox',
+              'aria-checked': false,
               tabindex: '0',
               style: 'cursor: pointer;'
             },
@@ -134,10 +136,12 @@ class MediaCard {
       addedValue = 1
       this._likes += addedValue
       this._template.figure.caption.likes._.innerHTML = `${this._likes} \u2665`
+      this._template.figure.caption.likes._.setAttribute('aria-checked', true)
     } else {
       addedValue = -1
       this._likes += addedValue
       this._template.figure.caption.likes._.innerHTML = `${this._likes} \u2661`
+      this._template.figure.caption.likes._.setAttribute('aria-checked', false)
     }
 
     this._template.figure.caption.likes._.setAttribute('title', this.#describeLikes())
