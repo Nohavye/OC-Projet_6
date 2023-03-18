@@ -24,7 +24,7 @@ class ProfileCard {
         _: document.createElement('a'),
         _attributes: {
           href: `profilePage.html?id=${entity.id}`,
-          role: 'link',
+          target: '_self',
           'aria-label': `Accéder au profil de ${entity.name}`
         },
 
