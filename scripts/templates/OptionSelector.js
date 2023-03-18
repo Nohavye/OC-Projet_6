@@ -67,7 +67,9 @@ class OptionSelector {
         _attributes: {
           'aria-live': 'assertive',
           style: `
-            diplay: none;
+            color: transparent;
+            position: absolute;
+            top: -100px; left: 0;
           `
         }
       }

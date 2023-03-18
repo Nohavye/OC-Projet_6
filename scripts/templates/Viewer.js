@@ -41,9 +41,10 @@ class Viewer {
         _attributes: {
           'aria-live': 'assertive',
           style: `
+            border: 1px solid red;
             color: transparent;
             position: absolute;
-            top: 0; left: 0;
+            top: -100px; left: 0;
           `
         }
       },
