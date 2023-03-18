@@ -31,19 +31,7 @@ class Viewer {
 
       // Evènements pour la navigation au clavier.
       _events: {
-        keydown: (e) => {
-          switch (e.key) {
-            case 'ArrowRight':
-              this.#next()
-              break
-            case 'ArrowLeft':
-              this.#last()
-              break
-            case 'Escape':
-              this.#sendCloseEvent()
-              break
-          }
-        }
+        keydown: this.#eventListeners.keydown
       },
 
       /*  Message d'accessibilité pour l'envoi
@@ -74,9 +62,7 @@ class Viewer {
           `
         },
         _events: {
-          click: () => {
-            this.#last()
-          }
+          click: this.#eventListeners.leftButtonClick
         }
       },
 
@@ -139,9 +125,7 @@ class Viewer {
           `
         },
         _events: {
-          click: () => {
-            this.#next()
-          }
+          click: this.#eventListeners.rightButtonClick
         }
       }
     }
@@ -156,6 +140,59 @@ class Viewer {
 
       case 'video':
         return `vidéo nommée '${this._mediaEntities[this._currentIndex].title}'`
+    }
+  }
+
+  // Passer au média suivant.
+  #next () {
+    if (this._currentIndex < this._mediaEntities.length - 1) {
+      this._currentIndex += 1
+    } else {
+      this._currentIndex = 0
+    }
+    this.setScreen()
+  }
+
+  // Passer au média précédent.
+  #last () {
+    if (this._currentIndex !== 0) {
+      this._currentIndex -= 1
+    } else {
+      this._currentIndex = this._mediaEntities.length - 1
+    }
+    this.setScreen()
+  }
+
+  // Envoyer un évènement 'closeEvent' à l'attention de ModalWrapper.
+  #sendCloseEvent () {
+    this._template._.dispatchEvent(new Event('closeEvent'))
+  }
+
+  // Fonctions liées au évènements du viewer.
+  #eventListeners = {
+
+    // Navigation au clavier.
+    keydown: (e) => {
+      switch (e.key) {
+        case 'ArrowRight':
+          this.#next()
+          break
+        case 'ArrowLeft':
+          this.#last()
+          break
+        case 'Escape':
+          this.#sendCloseEvent()
+          break
+      }
+    },
+
+    // Navigation à la souris.
+    leftButtonClick: () => {
+      this.#last()
+    },
+
+    rightButtonClick: () => {
+      this.#next()
     }
   }
 
@@ -209,31 +246,6 @@ class Viewer {
     window.setTimeout(() => {
       this._template.accessibilityMessage._.innerHTML = this.#describeMedia()
     }, 10)
-  }
-
-  // Passer au média suivant.
-  #next () {
-    if (this._currentIndex < this._mediaEntities.length - 1) {
-      this._currentIndex += 1
-    } else {
-      this._currentIndex = 0
-    }
-    this.setScreen()
-  }
-
-  // Passer au média précédent.
-  #last () {
-    if (this._currentIndex !== 0) {
-      this._currentIndex -= 1
-    } else {
-      this._currentIndex = this._mediaEntities.length - 1
-    }
-    this.setScreen()
-  }
-
-  // Envoyer un évènement 'closeEvent' à l'attention de ModalWrapper.
-  #sendCloseEvent () {
-    this._template._.dispatchEvent(new Event('closeEvent'))
   }
 
   /**
