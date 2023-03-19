@@ -6,5 +6,5 @@ Dans le dossier 'data' se trouvent les modules liés à la gestion des données 
 
 * 'DataEntities.js': Fournit deux classe permettant le formatage des données.
 
-`* MediaEntity: Formatage lié aux données de média.`
-`* ProfileEntity: Formatage lié au données de profil.`
+  * MediaEntity: Formatage lié aux données de média.
+  * ProfileEntity: Formatage lié au données de profil.
