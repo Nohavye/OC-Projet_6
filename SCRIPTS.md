@@ -431,20 +431,22 @@ Pour le fonctionnement du code, les imports suivant sont nécessaires:
   import { TemplatesforProfilePage as Templates } from '../templates/TemplatesModule.js'
   ```
 
-* La fonction getId() récupère l'identifiant du photographe dans les paramètres de l'URL de la page.
+* La fonction `getId()` récupère l'identifiant du photographe dans les paramètres de l'URL de la page.
 
-* La fonction createMediaCards() crée les cartes de média HTML à partir d'un tableau d'entités de données.
+* La fonction `createMediaCards()` crée les cartes de média HTML à partir d'un tableau d'entités de données.
 
-* La fonction displayMediaCards() ajoute les cartes de média à la section de navigation HTML de la page.
+* La fonction `displayMediaCards()` ajoute les cartes de média à la section de navigation HTML de la page.
 
-* La fonction createContactModal() crée une modale pour afficher le formulaire de contact avec le photographe.
+* La fonction `createContactModal()` crée une modale pour afficher le formulaire de contact avec le photographe.
 
-* La fonction createViewerModal() crée une modale pour afficher le viewer de photos.
+* La fonction `createViewerModal()` crée une modale pour afficher le viewer de photos.
 
-* La fonction getData() charge les données JSON pour le photographe spécifié dans l'URL et formate les données.
+* La fonction `getData()` charge les données JSON pour le photographe spécifié dans l'URL et formate les données.
 
-* La fonction createComponents() crée les différents composants de la page à partir des données formatées, notamment la bannière du photographe, un filtre pour trier les médias, et un encart pour afficher le total des likes et le tarif journalier du photographe.
+* La fonction `createComponents()` crée les différents composants de la page à partir des données formatées, notamment la bannière du photographe, un filtre pour trier les médias, et un encart pour afficher le total des likes et le tarif journalier du photographe.
 
-* La fonction initEvents() initialise les évènements sur la page, notamment le changement de filtre pour trier les cartes média, l'affichage de la modale de contact au clic sur le bouton correspondant, et l'affichage du viewer au clic sur une carte média.
+* La fonction `initEvents()` initialise les évènements sur la page, notamment le changement de filtre pour trier les cartes média, l'affichage de la modale de contact au clic sur le bouton correspondant, et l'affichage du viewer au clic sur une carte média.
+
+la fonction `init()` est appelée à la fin du code pour démarrer le processus.
 
 En bref, ce code permet de créer une page web pour afficher le portfolio d'un photographe, en utilisant des modules pour gérer les données et les templates HTML, et en créant des événements pour interagir avec la page.
