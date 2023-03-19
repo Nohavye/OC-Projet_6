@@ -360,7 +360,7 @@ Le composant peut être utilisé en appelant la méthode `setScreen()` qui affic
 
 ## Le dossier "utils"
 
-Dans le dossier "utils" se trouve les variables globales utiles à la construction des page HTML "index.html" et "profilePage.html".
+Dans le dossier "utils" se trouvent les variables globales utiles à la construction des page HTML "index.html" et "profilePage.html".
 
 * "Globals.js": Constantes et fonctions utiles à la construction des page HTML.
 
@@ -395,3 +395,56 @@ Ce code est une collection de constantes, fonctions et objets utilisés pour la 
   * Exportation des objets et fonctions créés pour être utilisés dans d'autres fichiers JavaScript.
 
 ## Le dossier "pages"
+
+Dans le dossier "page" se trouvent les scripts des deux pages HTML permettant de générer dynamiquement leur contenu.
+
+* "index.js": Script de la page d'acceuil "index.html".
+* "profilePage.js": Script de la page de profil "profilePage.html".
+
+---
+### "index.js": Script de la page d'acceuil.
+
+Le code charge les données JSON à partir du fichier photographers.json à l'aide de la méthode `loadData()` du module `Data.Manager`. Ensuite, il utilise les données récupérées pour créer les cartes de profil pour chaque photographe à l'aide de la fonction `createProfileCard()`. Les cartes de profil sont affichées sur la page Web à l'aide de la fonction `displayProfileCards()`.
+
+La fonction `init()` est la fonction d'initialisation principale du code. Elle est asynchrone et utilise l'opérateur await pour attendre que les données soient chargées avant de créer et d'afficher les cartes de profil.
+
+En fin de compte, la fonction init() est appelée à la fin du code pour démarrer le processus d'affichage des cartes de profil.
+
+Pour son fonctionnement, les imports suivant sont nécessaires:
+
+  ```javascript
+  import Data from '../data/DataModule.js'
+  import { GlobalsforIndexPage as Globals } from '../utils/GlobalsModule.js'
+  import { TemplatesforIndexPage as Templates } from '../templates/TemplatesModule.js'
+  ```
+
+---
+### "profilePage.js": Script de la page de profil.
+
+La page de profil affiche une bannière avec une description du photographe et son portfolio.
+
+Pour le fonctionnement du code, les imports suivant sont nécessaires:
+
+  ```javascript
+  import Data from '../data/DataModule.js'
+  import { GlobalsforProfilePage as Globals } from '../utils/GlobalsModule.js'
+  import { TemplatesforProfilePage as Templates } from '../templates/TemplatesModule.js'
+  ```
+
+* La fonction getId() récupère l'identifiant du photographe dans les paramètres de l'URL de la page.
+
+* La fonction createMediaCards() crée les cartes de média HTML à partir d'un tableau d'entités de données.
+
+* La fonction displayMediaCards() ajoute les cartes de média à la section de navigation HTML de la page.
+
+* La fonction createContactModal() crée une modale pour afficher le formulaire de contact avec le photographe.
+
+* La fonction createViewerModal() crée une modale pour afficher le viewer de photos.
+
+* La fonction getData() charge les données JSON pour le photographe spécifié dans l'URL et formate les données.
+
+* La fonction createComponents() crée les différents composants de la page à partir des données formatées, notamment la bannière du photographe, un filtre pour trier les médias, et un encart pour afficher le total des likes et le tarif journalier du photographe.
+
+* La fonction initEvents() initialise les évènements sur la page, notamment le changement de filtre pour trier les cartes média, l'affichage de la modale de contact au clic sur le bouton correspondant, et l'affichage du viewer au clic sur une carte média.
+
+En bref, ce code permet de créer une page web pour afficher le portfolio d'un photographe, en utilisant des modules pour gérer les données et les templates HTML, et en créant des événements pour interagir avec la page.
