@@ -24,6 +24,7 @@ Dans le dossier "data" se trouvent les modules liés à la gestion des données 
   }
   ```
 
+---
 ### Classe "MediaEntity": Formatage lié aux données de média.
 
 La classe "MediaEntity" représente une entité média. Cette classe permet de créer des instances d'entités média à partir des données fournies.
@@ -43,6 +44,7 @@ La classe a également des méthodes "get" pour chaque propriété, qui renvoien
 
 Le code utilise également une structure conditionnelle `if/else` pour déterminer si l'entité média est une image ou une vidéo. Si la propriété `data.image` est définie, cela signifie que l'entité média est une image, et la propriété `_fileType` est initialisée à "image". Si la propriété `data.video` est définie, cela signifie que l'entité média est une vidéo, et la propriété `_fileType` est initialisée à "video". Si aucune de ces propriétés n'est définie, la propriété `_fileType` est initialisée à null.
 
+---
 ### Classe "ProfileEntity": Formatage lié au données de profil.
 
 La classe "ProfileEntity" représente une entité de profil. Cette classe permet de créer des instances d'entités de profil à partir des données fournies.
@@ -59,10 +61,12 @@ Le constructeur de la classe prend un objet "data" en paramètre, qui est utilis
 
 La classe a également des méthodes "get" pour chaque propriété, qui renvoient la valeur de la propriété correspondante. La méthode `get portrait` renvoie un objet qui contient deux propriétés: "picture" et "thumbnail", qui représentent respectivement l'image complète du portrait et sa miniature. Les chemins d'accès à ces fichiers sont générés à partir de la propriété `_portrait` et sont définis comme des chaînes de caractères.
 
+---
 ### Enumérateur "Format": Décrit les différents formats de données.
 
 L'objet "Format" est un énumérateur ( enum ) qui contient deux propriétés de type "Symbol" : `Media` et `Profile`. Ces propriétés sont utilisées pour identifier le format de données qui sera utilisé pour créer une entité.
 
+---
 ### Classe "DataFactory": Délègue la création de données formatées.
 
 La classe "DataFactory" est utilisée pour créer des instances d'entités média ou profil à partir de données et d'un format donnés.
@@ -75,6 +79,7 @@ Le constructeur renvoie l'instance d'entité nouvellement créée.
 
 Cette classe peut être utilisée pour créer des instances d'entités média ou profil à partir de données et d'un format spécifié.
 
+---
 ### Classe "DataManager": Gère les données de l'application.
 
 La classe "DataManager", est utilisée pour gérer les données de l'application. Cette classe dispose de plusieurs méthodes pour charger et manipuler les données.
@@ -129,6 +134,7 @@ Dans le dossier "templates" se trouvent les modules liés à la construction de 
   }
   ```
 
+---
 ### Classe "Template": Construire des objets HTML complexes.
 
 Cette classe permet de construire des objets HTML complexes à partir d'un patron fourni sous forme d'objet.
@@ -182,6 +188,7 @@ La méthode `build()` applique d'abord les attributs, ajoute les écouteurs d'é
 
 En résumé, cette classe permet de construire des objets HTML complexes en utilisant un modèle structuré sous forme d'objet, et offre une manière efficace de créer dynamiquement des éléments HTML pour une application web.
 
+---
 ### Classe "InputElement": Représente un élément d'entrée de formulaire.
 
 La classe prend en paramètres une balise HTML pour l'élément, un texte de label et un objet d'attributs.
@@ -196,6 +203,7 @@ Le modèle est construit en utilisant des éléments DOM et en définissant leur
 
 La classe définit également deux événements personnalisés pour l'élément d'entrée.
 
+---
 ### Classe "InputText": Représente un élément d'entrée de texte.
 
 La classe "InputText" étend la classe "InputElement" précédemment définie. Cette nouvelle classe représente un élément d'entrée de texte dans un formulaire HTML. Le constructeur de la classe prend un certain nombre de paramètres qui permettent de personnaliser la création de l'élément d'entrée. Les paramètres sont :
@@ -208,10 +216,12 @@ La classe "InputText" étend la classe "InputElement" précédemment définie. C
 
 Le constructeur appelle ensuite le constructeur de la classe InputElement avec les paramètres nécessaires pour créer l'élément d'entrée de texte. La classe InputText ajoute simplement une validation à l'entrée en utilisant l'expression régulière passée en paramètre.
 
+---
 ### Classe "InputTextArea": Représente un élément d'entrée de zone de texte.
 
 Cette classe représente un élément d'entrée de zone de texte. Cette classe hérite également de la classe InputElement et utilise le même modèle de création de template que la classe InputText. Les paramètres de construction incluent l'identifiant de l'élément d'entrée, le libellé de l'élément d'entrée, la longueur minimale de l'entrée, le message à afficher pour aider l'utilisateur à valider l'entrée, et une option pour indiquer si l'entrée est obligatoire ou non.
 
+---
 ### Classe "FormElement": Représente un élément de formulaire.
 
 Cette classe représente un élément de formulaire pouvant contenir plusieurs entrées et un bouton de soumission. Elle utilise les classes "Template" et "InputElement" qui sont importées.
@@ -235,6 +245,7 @@ La classe FormElement a les méthodes suivantes :
   * `#startInputsListeners()` : initialise les écouteurs d'évènements liés à la validation du formulaire et à la gestion des messages pour l'accessibilité.
   * `get #formValidity()` : teste la validité du formulaire.
 
+---
 ### Classe "InsertBox": Représente un encart.
 
 Cette classe représente un encart affichant le nombre de likes et le tarif journalier sur la page de profil d'un artiste.
