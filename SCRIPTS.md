@@ -166,7 +166,7 @@ La méthode principale de cette classe est `build()`, qui prend en paramètre un
     child: {
 
       _: document.createElement('div'),
-      _textContent: 'Container',
+      _textContent: 'Child',
 
       _attributes: {
         id: 'div-child',
@@ -181,3 +181,75 @@ Lorsque la méthode `build()` est appelée avec un objet `TemplatePattern`, elle
 La méthode `build()` applique d'abord les attributs, ajoute les écouteurs d'événements et défini le texte contenu dans l'élément racine si ces informations sont fournies dans l'objet `TemplatePattern`. Ensuite, la méthode parcourt toutes les clés de l'objet (les éléments enfants) et appelle de manière récursive la méthode `build()` sur chaque élément enfant avant de l'ajouter au DOM de l'élément parent.
 
 En résumé, cette classe permet de construire des objets HTML complexes en utilisant un modèle structuré sous forme d'objet, et offre une manière efficace de créer dynamiquement des éléments HTML pour une application web.
+
+### Classe "InputElement": Représente un élément d'entrée de formulaire.
+
+La classe prend en paramètres une balise HTML pour l'élément, un texte de label et un objet d'attributs.
+
+Elle construit un modèle d'élément d'entrée en utilisant un objet `template` contenant une étiquette et une entrée.
+
+Elle utilise la bibliothèque "Template.js" pour construire le modèle.
+
+La classe définit également des méthodes pour ajouter l'élément d'entrée à un parent, récupérer l'élément d'entrée, récupérer l'identifiant, la validité, la valeur et définir une nouvelle valeur pour l'élément d'entrée.
+
+Le modèle est construit en utilisant des éléments DOM et en définissant leurs propriétés et attributs à l'aide d'objets JavaScript.
+
+La classe définit également deux événements personnalisés pour l'élément d'entrée.
+
+### Classe "InputText": Représente un élément d'entrée de texte.
+
+La classe "InputText" étend la classe "InputElement" précédemment définie. Cette nouvelle classe représente un élément d'entrée de texte dans un formulaire HTML. Le constructeur de la classe prend un certain nombre de paramètres qui permettent de personnaliser la création de l'élément d'entrée. Les paramètres sont :
+
+  * `id` : l'identifiant de l'élément d'entrée.
+  * `label` : le texte du label associé à l'élément d'entrée.
+  * `regex` : une expression régulière utilisée pour valider l'entrée de l'utilisateur.
+  * `message` : un message à afficher pour aider l'utilisateur à valider l'entrée.
+  * `required` : un booléen indiquant si l'entrée est obligatoire ou non. Sa valeur par défaut est true.
+
+Le constructeur appelle ensuite le constructeur de la classe InputElement avec les paramètres nécessaires pour créer l'élément d'entrée de texte. La classe InputText ajoute simplement une validation à l'entrée en utilisant l'expression régulière passée en paramètre.
+
+### Classe "InputTextArea": Représente un élément d'entrée de zone de texte.
+
+Cette classe représente un élément d'entrée de zone de texte. Cette classe hérite également de la classe InputElement et utilise le même modèle de création de template que la classe InputText. Les paramètres de construction incluent l'identifiant de l'élément d'entrée, le libellé de l'élément d'entrée, la longueur minimale de l'entrée, le message à afficher pour aider l'utilisateur à valider l'entrée, et une option pour indiquer si l'entrée est obligatoire ou non.
+
+### Classe "FormElement": Représente un élément de formulaire.
+
+Cette classe représente un élément de formulaire pouvant contenir plusieurs entrées et un bouton de soumission. Elle utilise les classes "Template" et "InputElement" qui sont importées.
+
+La classe FormElement a les propriétés suivantes :
+
+  * `_name` : le nom de l'élément de formulaire. Permet de générer un sélècteur CSS personnalisé:
+  
+    ```javascript
+    class: `${name}-form`
+    ```
+  
+  * `_inputElements` : un objet contenant les entrées de l'élément de formulaire sous la forme d'une classe héritée de la classe "InputElement".
+  * `_template` : un objet contenant les différentes parties de l'élément de formulaire (le conteneur <form>, la zone de contenu, le bouton de soumission, etc.).
+  * `_hasBeenSubmitted` : un booléen qui indique si le formulaire a déjà été soumis ou non.
+
+La classe FormElement a les méthodes suivantes :
+
+  * `constructor()` : le constructeur de la classe FormElement, qui prend comme paramètres le nom de l'élément de formulaire et les entrées de l'élément de formulaire.
+  * `#initContentArea()` : initialise la zone de contenu du formulaire (la zone destinée à recevoir les entrées du formulaire).
+  * `#startInputsListeners()` : initialise les écouteurs d'évènements liés à la validation du formulaire et à la gestion des messages pour l'accessibilité.
+  * `get #formValidity()` : teste la validité du formulaire.
+
+### Classe "InsertBox": Représente un encart.
+
+Cette classe représente un encart affichant le nombre de likes et le tarif journalier sur la page de profil d'un artiste.
+
+Lorsque vous créez une nouvelle instance de la classe InsertBox, vous devez passer les paramètres suivants :
+
+  * `likes` : le nombre initial de likes à afficher.
+  * `price` : le prix par jour à afficher.
+
+La classe InsertBox contient plusieurs méthodes :
+
+  * `#describeLikes()` : une méthode privée qui renvoie une description du nombre total de likes affichés.
+  * `addTo(parent)` : ajoute l'élément HTML de la boîte InsertBox à un élément parent.
+  * `element` : renvoie l'élément HTML de l'instance de la boîte InsertBox.
+
+Le code utilise également le module "Template" pour créer les éléments HTML de la boîte "InsertBox" à partir d'un objet `template`.
+
+Enfin, l'instance de la classe InsertBox crée un écouteur d'événements pour l'événement personnalisé likeCardClick. Lorsque cet événement est déclenché, le nombre de likes est mis à jour et l'élément HTML de la boîte InsertBox est mis à jour en conséquence.
