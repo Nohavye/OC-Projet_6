@@ -1,6 +1,6 @@
 # Projet P6 - Description du code JavaScript
 
-## Dossier "data"
+## Le dossier "data"
 
 Dans le dossier "data" se trouvent les modules liés à la gestion des données de l'application.
 
@@ -86,3 +86,45 @@ La classe "DataManager", est utilisée pour gérer les données de l'application
   * La méthode `search` permet de chercher des éléments dans les données en fonction d'une propriété et d'une valeur donnée. Elle prend en paramètre une section, une propriété et une valeur, et renvoie un tableau d'éléments correspondants. Elle peut également prendre un format en paramètre pour formater les éléments correspondants.
 
 La classe utilise également l'énumérateur "Format" pour définir les formats de données possibles, ainsi que la classe "DataFactory" pour créer des entités à partir de données et d'un format donnés.
+
+## Le dossier "templates"
+
+Dans le dossier "templates" se trouvent les modules liés à la construction de templates pour l'application.
+
+* "Template.js": Fournit une classe permettant de construire des objets HTML complexes à partir d'un patron fourni sous forme d'objet.
+
+* "FormElement.js": Founit quatre classes attachées à la création de formulaires.
+
+  * Classe "InputElement": Représente un élément d'entrée de formulaire.
+  * Classe "InputText": Etend la classe InputElement. Représente un élément d'entrée de texte.
+  * Classe "InputTextArea": Etend la classe InputElement. Représente un élément d'entrée de zone de texte.
+  * Classe "FormElement": Représente un élément de formulaire.
+
+* "InsertBox.js": Fournit une classe représentant un encart affichant le nombre de likes et le tarif journalier sur la page de profil d'un artiste.
+
+* "MediaCard.js": Fournit une classe représantant une carte pour afficher un média (image ou vidéo) avec son titre et son nombre de likes.
+
+* "ModalWrapper.js": Fournit une classe utilisée pour créer et gérer une fenêtre modale.
+
+* "OptionSelector.js": Fournit une classe représantant un composant de sélection d'options.
+
+* "ProfileBanner.js": Fournit une classe représantant une bannière de profil.
+
+* "ProfileCard.js": Fournit une classe qui crée une carte de profil.
+
+* "Viewer.js": Fournit une classe représantant un composant d'affichage de médias.
+
+* "TemplatesModule.js": Permet l'import des modules ci-dessus dans un objet "Templates" structuré.
+
+  ```
+  const Templates = {
+    Form,
+    InsertBox,
+    MediaCard,
+    ModalWrapper,
+    OptionSelector,
+    ProfileBanner,
+    ProfileCard,
+    Viewer
+  }
+  ```
