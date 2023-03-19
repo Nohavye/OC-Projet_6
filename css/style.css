@@ -42,6 +42,7 @@ h1 {
 }
 
 .browser-section {
+    margin-top: 50px;
     padding: 50px 100px 100px 100px;
     display: flex;
     justify-content: center;
