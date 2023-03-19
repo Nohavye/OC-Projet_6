@@ -17,7 +17,7 @@ Dans le dossier "data" se trouvent les modules liés à la gestion des données 
 
 * "DataModule.js": Permet l'import des modules ci-dessus dans un objet "Data" structuré.
 
-  ```
+  ```javascript
   const Data = {
     Format,
     Manager
@@ -116,7 +116,7 @@ Dans le dossier "templates" se trouvent les modules liés à la construction de 
 
 * "TemplatesModule.js": Permet l'import des modules ci-dessus dans un objet "Templates" structuré.
 
-  ```
+  ```javascript
   const Templates = {
     Form,
     InsertBox,
@@ -128,3 +128,56 @@ Dans le dossier "templates" se trouvent les modules liés à la construction de 
     Viewer
   }
   ```
+
+### Classe "Template": Construire des objets HTML complexes.
+
+Cette classe permet de construire des objets HTML complexes à partir d'un patron fourni sous forme d'objet.
+
+La méthode principale de cette classe est `build()`, qui prend en paramètre un objet de type `TemplatePattern`. Cet objet est structuré de manière à refléter la structure de l'objet HTML que l'on souhaite construire. Plus précisément, chaque propriété de l'objet correspond à un élément HTML et peut avoir plusieurs sous-propriétés :
+
+  * La propriété `_` correspond à l'élément HTML lui-même.
+  * La sous-propriété `_textContent` correspond au contenu textuel de l'élément.
+  * La sous-propriété `_attributes` est un objet contenant les attributs de l'élément HTML.
+  * La sous-propriété `_events` est un objet contenant les écouteurs d'événements associés à l'élément HTML.
+  * Les autres propriétés de l'objet correspondent aux éléments HTML enfants.
+
+  Exemple:
+  ```javascript
+  const pattern = {
+
+    _: document.createElement('div'),
+    _textContent: 'Container',
+
+    _attributes: {
+      id: 'div-container',
+      class: 'div-container',
+      style: `
+        color: red;
+        border: 1px solid red;
+      `
+    },
+
+    _events: {
+      click: () => {
+        console.log('click on container')
+      }
+    }
+
+    child: {
+
+      _: document.createElement('div'),
+      _textContent: 'Container',
+
+      _attributes: {
+        id: 'div-child',
+        class: 'div-child'
+      }
+    }
+  }
+  ```
+
+Lorsque la méthode `build()` est appelée avec un objet `TemplatePattern`, elle parcourt récursivement toutes les propriétés de l'objet pour construire les éléments HTML correspondants et les ajouter à l'élément parent.
+
+La méthode `build()` applique d'abord les attributs, ajoute les écouteurs d'événements et défini le texte contenu dans l'élément racine si ces informations sont fournies dans l'objet `TemplatePattern`. Ensuite, la méthode parcourt toutes les clés de l'objet (les éléments enfants) et appelle de manière récursive la méthode `build()` sur chaque élément enfant avant de l'ajouter au DOM de l'élément parent.
+
+En résumé, cette classe permet de construire des objets HTML complexes en utilisant un modèle structuré sous forme d'objet, et offre une manière efficace de créer dynamiquement des éléments HTML pour une application web.
